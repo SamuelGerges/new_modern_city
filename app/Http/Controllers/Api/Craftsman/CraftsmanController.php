@@ -54,7 +54,7 @@ class CraftsmanController extends Controller
                     ])
             );
             $craft->save();
-            return $this->returnSuccessMessage('200', 'Craftsman successfully registered');
+            return $this->returnData('200',$craft ,'Craftsman successfully registered');
 
         }
 

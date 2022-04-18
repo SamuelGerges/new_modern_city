@@ -21,7 +21,7 @@ class Craftsman extends Authenticatable implements JWTSubject
 
 
     protected $hidden = [
-        'password',
+        'password','created_at','updated_at'
     ];
 
 

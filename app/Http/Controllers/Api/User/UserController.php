@@ -57,8 +57,9 @@ class UserController extends Controller
             );
 //            return response()->json($user);
             $user->save();
+//            return response()->json($user);
 
-            return $this->returnSuccessMessage('200','User successfully registered');
+            return $this->returnData('200',$user,'User successfully registered');
         }
 
 
