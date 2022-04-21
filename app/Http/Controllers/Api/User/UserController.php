@@ -20,10 +20,11 @@ class UserController extends Controller
      */
 
 
-    public function RegisterUser(Request $request )
+    public function RegisterUser(Request $request)
     {
+
         // req = null => cities  || req == val =>validation
-        if ((is_null($request))){
+        if (is_null($request)) {
             $data['cities'] = City::select('city_id', 'city_name')->get();
             return response()->json($data['cities']);
         }
@@ -36,7 +37,7 @@ class UserController extends Controller
                 'gender'       => 'required|string|max:30',
                 'password'     => 'required|min:6|max:40',
                 'address'      => 'required|string|max:30',
-                'phone'        => 'required|unique:users|max:11',
+                'phone'        => 'required|numeric|unique:users|digits:11',
             ]);
 
             if($validator->fails()){
@@ -55,44 +56,35 @@ class UserController extends Controller
                         'updated_at'  => now(),
                     ])
             );
-//            return response()->json($user);
             $user->save();
-//            return response()->json($user);
-
-            return $this->returnData('200',$user,'User successfully registered');
+            return $this->returnData('data',$user,'User successfully registered');
         }
-
-
     }
 
-    public function LoginUser(Request $request)
+
+    public function EditUser(Request $request)
     {
-        // Validation
-        $validator = Validator::make($request->all(), [
-            "email" => "required",
-            "password" => "required"
+        $token = $request->token;
+        $user = User::select('user_id')->where('token',$token)->first();
+        $validator = Validator::make($request->all(),[
+            'first_name'   => 'required|string|max:30',
+            'last_name'    => 'required|string|max:30',
+            'password'     => 'required|min:6|max:40',
+            'address'      => 'required|string|max:30',
+            'phone'        => 'required|numeric|unique:users,phone,'.$user->user_id.',user_id|digits:11',
 
         ]);
-        if ($validator->fails()){
+        if($validator->fails()){
             $code = $this->returnCodeAccordingToInput($validator);
             return $this->returnValidationError($code, $validator);
         }
-//            login
-        $credentials = $request->only(['email', 'password']);
-        User::where('email',$request->email)->update(['token' => Str::random(20).now().Str::random(21)]);
-        $user_token = auth()->guard('api_user')->attempt($credentials);
-        if (!$user_token){
-            return $this->returnError('E001', 'The Data is not Correct');
-        }
-        $user = Auth::guard('api_user')->user();
-
-//        //return token
-        return $this->returnData('User', $user,'This Data is selected');
-    }
-
-    public function getToken(Request $request)
-    {
-        $token = $request->token;
-
+        $data = array_merge($validator->validated(),
+            [
+                'password' => bcrypt($request->password) ,
+                'created_at'   => now(),
+                'updated_at'  => now(),
+            ]);
+        $updated_data = User::where('user_id','=',$user->user_id)->update($data);
+        return $this->returnSuccessMessage('updated_data','Successfully Updated');
     }
 }

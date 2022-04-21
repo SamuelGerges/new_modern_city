@@ -73,12 +73,12 @@ Route::namespace('Admin')->prefix('dashboard')->group(function (){
 
         Route::prefix('crafts_types')->group(function (){
 
-            Route::get('/', 'CraftsmanTypeController@index')->name('admin.craft_type.index');
+            Route::get('/', 'CraftsmanController@index')->name('admin.craft_type.index');
 
-            Route::get('/edit/{id?}', array( 'uses' => 'CraftsmanTypeController@create_or_edit', function($id = null){}))->name('admin.craft_type.edit');
-            Route::post('/edit/{id?}', array( 'uses' => 'CraftsmanTypeController@create_or_edit', function($id = null){}))->name('admin.craft_type.edit');
+            Route::get('/edit/{id?}', array( 'uses' => 'CraftsmanController@create_or_edit', function($id = null){}))->name('admin.craft_type.edit');
+            Route::post('/edit/{id?}', array( 'uses' => 'CraftsmanController@create_or_edit', function($id = null){}))->name('admin.craft_type.edit');
 
-            Route::get('/delete/{id?}', array( 'uses' => 'CraftsmanTypeController@delete', function($id = null){}))->name('admin.craft_type.delete');
+            Route::get('/delete/{id?}', array( 'uses' => 'CraftsmanController@delete', function($id = null){}))->name('admin.craft_type.delete');
 
         });
 

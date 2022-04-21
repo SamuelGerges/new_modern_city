@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 
@@ -15,10 +16,9 @@ class CraftsmanType extends Model
         'craftsman_type_name', 'craftsman_type_img',
     ];
 
-    protected $hidden = [
-    ];
+    protected $hidden = ['created_at','updated_at'];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
 
     protected static function validation($craftsman_id = null){
@@ -36,6 +36,13 @@ class CraftsmanType extends Model
             'data.craftsman_type_name'    => ['required', 'string', 'max:100', $rule],
             'data.craftsman_type_img.url' => ['image', 'mimes:jpg,jpeg,png'],
         ];
+    }
+
+
+    public static function show_all_crafts_type()
+    {
+        $crafts_type = DB::table('craftsmen_types')->get();
+        return $crafts_type;
     }
 
 }

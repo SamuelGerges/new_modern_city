@@ -42,15 +42,5 @@ class PlaceType extends Model
     }
 
 
-    public static function show_places_by_type($place_type_id)
-    {
-        /*************** return all places by places_type_id ****************/
-        $places = DB::table('places')
-            ->select('places.place_id', 'places.place_name', 'places.big_img', 'places_types.place_type_name')
-            ->join('places_types', 'places.place_type_id', '=', 'places_types.place_type_id')
-            ->where('places_types.place_type_id' , '=', $place_type_id)
-            ->get();
-        return $places;
-    }
 
 }

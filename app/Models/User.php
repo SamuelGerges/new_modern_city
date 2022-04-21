@@ -91,4 +91,15 @@ class User extends Authenticatable implements JWTSubject
 
 
     }
+
+
+
+    // TODO return Data OF USER
+    public static function show_data_of_user($user_id)
+    {
+        $user = DB::table('users')
+            ->select('user_id','first_name', 'last_name', 'phone', 'address', 'city_id','email', 'gender','user_img')
+            ->where('user_id','=',$user_id)->get();
+        return $user;
+    }
 }

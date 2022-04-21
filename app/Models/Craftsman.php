@@ -15,15 +15,19 @@ class Craftsman extends Authenticatable implements JWTSubject
     protected $primaryKey = 'craftsman_id';
     protected $guarded = ['craftsman_id','city_id','craftsman_type_id','token'];
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'gender', 'password', 'address', 'phone', 'work_state','craftsman_type_id',
+        'first_name', 'last_name', 'email', 'gender', 'password', 'address', 'phone', 'status','craftsman_type_id',
         'city_id', 'description','craftsman_img','token',
     ];
 
 
     protected $hidden = [
-        'password','created_at','updated_at'
+        'password','created_at','updated_at',
     ];
 
+    public function getStatusAttribute($val)
+    {
+        return $val === 0 ? 'Not Active' : 'Active';
+    }
 
     public function show_craftsman_city($city_id)
     {
@@ -98,4 +102,47 @@ class Craftsman extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }}
+    }
+
+
+
+    public static function show_craftsman_by_type($craftsman_type_id)
+    {
+        /*************** return all craftsman by craftsman_type_id ****************/
+        $crafts = DB::table('craftsmen')
+            ->select('craftsman_id', 'first_name','last_name','description' ,'craftsman_img','craftsmen_types.craftsman_type_name')
+            ->join('craftsmen_types', 'craftsmen.craftsman_type_id', '=', 'craftsmen_types.craftsman_type_id')
+            ->where('craftsmen_types.craftsman_type_id' , '=', $craftsman_type_id)
+            ->get();
+        return $crafts;
+    }
+
+    public static function show_datails_of_craftsman($crafts_id)
+    {
+        // TODO: return details of place
+
+        $craftsman_details = DB::table('craftsmen')
+            ->select('first_name', 'last_name', 'email', 'gender',
+                'address', 'phone', 'status','craftsman_type_id',
+                'city_id', 'description','craftsman_img')
+            ->where('craftsman_id','=',$crafts_id)
+            ->get();
+        return $craftsman_details;
+    }
+
+
+    // TODO return Data OF USER
+    public static function show_data_of_craftsman($craftsman_id)
+    {
+        $craftsman = DB::table('craftsmen')
+            ->select(
+                'craftsman_id','first_name', 'last_name', 'email', 'gender', 'address', 'phone', 'status','craftsman_type_id',
+                'city_id', 'description','craftsman_img'
+            )
+            ->where('craftsman_id','=',$craftsman_id)->get();
+        return $craftsman;
+    }
+
+
+
+}

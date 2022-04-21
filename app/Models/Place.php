@@ -10,15 +10,11 @@ class Place extends Model
     protected $table = 'places';
     protected $guarded = ['place_id', 'place_type_id', 'city_id'];
     protected $fillable = [
-        'place_name', 'slug', 'address', 'geo_location_lat', 'geo_location_long','description', 'show_in_ads',
+        'place_name', 'phone', 'address', 'geo_location_lat', 'geo_location_long','description', 'show_in_ads',
         'show_in_famous_places', 'open_time', 'close_time', 'big_img', 'small_img', 'slider_img', 'place_type_id', 'city_id'
     ];
 
-
-    protected $hidden = [
-        'password',
-    ];
-
+    protected $hidden = ['created_at','updated_at'];
 
     protected static function validation(){
 
@@ -41,7 +37,6 @@ class Place extends Model
         ];
     }
 
-
     public function show_place_city($city_id)
     {
 
@@ -51,7 +46,6 @@ class Place extends Model
         return $city;
     }
 
-
     public function show_place_type($place_type_id)
     {
 
@@ -60,4 +54,26 @@ class Place extends Model
             ->value('place_type_name');
         return $group;
     }
+
+    public static function show_places_by_type($place_type_id)
+    {
+        /*************** return all places by places_type_id ****************/
+        $places = DB::table('places')
+            ->select('place_id', 'place_name','phone', 'description' ,'big_img', 'places_types.place_type_name')
+            ->join('places_types', 'places.place_type_id', '=', 'places_types.place_type_id')
+            ->where('places_types.place_type_id' , '=', $place_type_id)
+            ->get();
+        return $places;
+    }
+
+    public static function show_datails_of_place($place_id)
+    {
+        // TODO: return details of place
+
+        $place_details = DB::table('places')
+                        ->where('place_id','=',$place_id)
+                        ->get();
+        return $place_details;
+    }
+
 }
