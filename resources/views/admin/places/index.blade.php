@@ -41,11 +41,12 @@
                                     <tr>
                                         <th style="width: 3%" class="text-center">#</th>
                                         <th style="width: 13%" class="text-center">Place Name</th>
-                                        <th style="width: 15%" class="text-center">Place Type</th>
+                                        <th style="width: 12%" class="text-center">Place Type</th>
                                         <th style="width: 13%" class="text-center">City</th>
-                                        <th style="width: 20%" class="text-center">Show In Ads</th>
-                                        <th style="width: 15%" class="text-center">Show In Famous Places</th>
-                                        <th style="width: 20%" class="text-center">Action</th>
+                                        <th style="width: 13%" class="text-center">State</th>
+                                        <th style="width: 15%" class="text-center">Show In Ads</th>
+                                        <th style="width: 15%" class="text-center">Famous Places</th>
+                                        <th style="width: 15%" class="text-center">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -56,6 +57,11 @@
                                                 <td class="text-center">{{ $place->place_name }}</td>
                                                 <td class="text-center">{{ $place->show_place_type($place->place_type_id) }}</td>
                                                 <td class="text-center">{{ $place->show_place_city($place->city_id) }}</td>
+
+                                                <?php
+                                                ?>
+                                                <td class="text-left"><?php echo $place->show_place_state($place->place_id) == 'open' ? $state = '<i class="fas fa-circle" style="padding-right: 10px; font-size: 10px; color: #2dff20"></i>Now open' : $state = '<i class="fas fa-circle" style="padding-right: 10px; font-size: 10px; color: #ff2020"></i>Not now open'; ?></td>
+
                                                 <td class="text-center">{{ $place->show_in_ads == 0 ? 'No' : 'Yes' }}</td>
                                                 <td class="text-center">{{ $place->show_in_famous_places == 0 ? 'No' : 'Yes'}}</td>
 

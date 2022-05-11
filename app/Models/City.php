@@ -17,16 +17,19 @@ class City extends Model
     ];
     public $timestamps = false;
 
-    protected static function validation($place_id = null){
 
-        if($place_id != NULL){
+    protected static function validation($place_id = null)
+    {
+
+        if ($place_id != NULL) {
             $rule = Rule::unique('cities', 'city_name')->ignore($place_id, 'city_id');
-        }
-        else{
+        } else {
             $rule = Rule::unique('cities', 'city_name');
         }
 
         return [
-            'data.city_name'  => ['required', 'string', 'max:60', $rule]
+            'data.city_name' => ['required', 'string', 'max:60', $rule]
         ];
-    }}
+    }
+
+}

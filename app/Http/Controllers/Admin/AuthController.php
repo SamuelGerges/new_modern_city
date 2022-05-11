@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Craftsman;
+use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 
 class AuthController extends Controller
@@ -14,16 +19,19 @@ class AuthController extends Controller
 
     public function login()
     {
+
         return view('admin.auth.login');
     }
 
     public function do_login(Request $request)
     {
+
+
+
         $data = $request->validate([
             'email' => 'required | email | max:191',
             'password' => 'required | string',
         ]);
-
 
         $auth = auth()->guard('admin')->attempt([
             'email' => $data['email'],
@@ -33,15 +41,17 @@ class AuthController extends Controller
         /*********** check if admin are logged in or not **********/
 
         if ($auth) {
-            $admin = new Admin();
+
+            $admin = new User();
             $admin = $admin->show_user_type($data['email']);
-            $method =strtolower('_'.$admin->user_group_name);
+            $method = strtolower('_' . $admin->user_group_name);
 
             if (method_exists($this, $method)) {
                 return $this->$method();
             } else {
                 return back()->withErrors(['msg' => ' You don\'t have permission']);
             }
+
         } else {
             return back()->withErrors(['msg' => 'email or password invalid']);
         }
@@ -49,9 +59,12 @@ class AuthController extends Controller
 
     public function logout()
     {
+
         auth()->guard('admin')->logout();
+
         // check if admin  are logged in or not
         return redirect(route('admin.login'));
+
     }
 
 
@@ -60,10 +73,13 @@ class AuthController extends Controller
 
     private function _admins()
     {
+        $user_data = json_decode(json_encode(DB::table('users')->first('first_name')), true);
+        $user_data['group'] = "Admin";
+        Session::put('user_data', $user_data);
         return redirect(route('admin.home'));
     }
 
-    private function _users()
+    private function _user()
     {
         return redirect(route('front.homepage'));
     }

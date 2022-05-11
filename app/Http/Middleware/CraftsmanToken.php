@@ -13,12 +13,11 @@ class CraftsmanToken
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Closure $next
      * @return mixed
      */
     public function handle($request,Closure $next)
     {
-
         if (isset($request->token)){
             $token = $request->token;
             $craftsman = Craftsman::select('craftsman_id')->where('token', $token)->first();
@@ -28,11 +27,11 @@ class CraftsmanToken
             }
             else{
                 //not auth ==> error
-                return $this->returnError('404','not auth');
+                return $this->returnError('401','Unauthorized');
             }
         }
         else {
             // not aut ==> error
-            return $this->returnError('404','not auth');
+            return $this->returnError('401','Unauthorized');
         }    }
 }

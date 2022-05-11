@@ -4,20 +4,21 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>{{env('meta_title')}}</title>
 
-    <script type="text/javascript" src="{{asset('admin/my_files/boiar_files.js')}}"></script>
     <!-- jQuery -->
     <script src="{{asset('admin/plugins/jquery/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('admin/my_files/boiar_files.js')}}"></script>
+    <script type="text/javascript" src="{{asset('admin/my_files/test.js')}}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{asset('admin/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     <!-- Font Awesome version 6-->
     <script defer src="{{asset('admin/fontawesome_6/js/all.js')}}"></script>
     <link href="{{asset('admin/fontawesome_6/css/all.css')}}" rel="stylesheet">
     <link href="{{asset('admin/fontawesome_6/css/fontawesome.css')}}" rel="stylesheet">
     <link href="{{asset('admin/fontawesome_6/css/brands.css')}}" rel="stylesheet">
-    <link href="{{asset('admin/fontawesome_6/css/css/solid.css')}}" rel="stylesheet">
     <link href="{{asset('admin/fontawesome_6/css/v5-font-face.css')}}" rel="stylesheet" />
 
 
@@ -25,10 +26,6 @@
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset('admin/plugins/fontawesome-free/css/all.min.css')}}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="{{asset('admin/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
     <!-- iCheck -->
@@ -39,8 +36,6 @@
     <link rel="stylesheet" href="{{asset('admin/dist/css/adminlte.min.css')}}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{asset('admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{asset('admin/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{asset('admin/plugins/summernote/summernote-bs4.min.css')}}">
 
@@ -65,7 +60,7 @@
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="index3.html" class="nav-link">Home</a>
+                <a href="{{ route('admin.home') }}" class="nav-link">Home</a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
@@ -96,64 +91,7 @@
                 </div>
             </li>
 
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-                <a class="nav-link" data-toggle="dropdown" href="#">
-                    <i class="far fa-comments"></i>
-                    <span class="badge badge-danger navbar-badge">3</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Brad Diesel
-                                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">Call me whenever you can...</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    John Pierce
-                                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">I got your message bro</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <!-- Message Start -->
-                        <div class="media">
-                            <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                            <div class="media-body">
-                                <h3 class="dropdown-item-title">
-                                    Nora Silvester
-                                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                </h3>
-                                <p class="text-sm">The subject goes here</p>
-                                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                            </div>
-                        </div>
-                        <!-- Message End -->
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                </div>
-            </li>
+
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
@@ -186,32 +124,39 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
-                </a>
-            </li>
         </ul>
     </nav>
+
+
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="{{ route('admin.home') }}" class="brand-link">
             <img src="{{asset('admin/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+            <span class="brand-text font-weight-bold" style="color: #3efff6">{{env('meta_title')}}</span>
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="user-panel mt-3 pb-3 d-flex">
                 <div class="image">
                     <img src="{{asset('admin/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">Alexander Pierce</a>
+                    <span class="" style="color: white; font-size: 17px">
+                        <?php
+                            $user_data = \Illuminate\Support\Facades\Session::get('user_data');
+                            echo $user_data['first_name'];
+                        ?>
+                    </span>
+                </div>
+            </div>
+            <div class="user-panel d-flex">
+                <div class="info">
+                    <span style="color: white; font-size: 16px; font-weight: bold">Group : </span><span style="color: #3efff6; font-size: 14px">{{ $user_data['group'] }} </span>
                 </div>
             </div>
 
@@ -220,52 +165,48 @@
 
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <?php
-                    echo '<span style="color: red;">comp/header</span>';
-                    ?>
+                    <li class="nav-item" >
+                        <a class="nav-link" href="{{route('admin.city.index')}}">
+                            <i class=" nav-icon fa-solid fa-city" style="color: #4adcff;"></i> <span style="color: #ffc606; font-size: 16px; font-weight: bold">Cities</span>
+                        </a>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.user_group.index')}}">
-                            <i class="nav-icon fas fa-users"></i> Users Groups
+                            <i class="nav-icon fas fa-users" style="color: #4adcff;"></i><span style="color: #ffc606; font-size: 16px; font-weight: bold">Users Groups</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.user.index')}}">
-                            <i class="nav-icon fas fa-users"></i> Users
+                            <i class="nav-icon fas fa-users" style="color: #4adcff;"></i><span style="color: #ffc606; font-size: 16px; font-weight: bold">Users</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.place_type.index')}}">
-                            <i class="nav-icon fas fa-map-marker"></i> Places Types
+                            <i class="nav-icon fas fa-map-marker" style="color: #4adcff;"></i> <span style="color: #ffc606; font-size: 16px; font-weight: bold">Places Types</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.place.index')}}">
-                            <i class="nav-icon fa-solid fa-map-location-dot"></i> Places
+                            <i class="nav-icon fa-solid fa-map-location-dot" style="color: #4adcff;"></i> <span style="color: #ffc606; font-size: 16px; font-weight: bold">Places</span>
                         </a>
                     </li>
 
-
-
-
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.craft_type.index')}}">
-                            <i class="nav-icon fas fa-cogs"></i> Craftsmen Types
+                            <i class="nav-icon fas fa-cogs" style="color: #4adcff;"></i><span style="color: #ffc606; font-size: 16px; font-weight: bold">Craftsmen Types</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.craft.index')}}">
-                            <i class="nav-icon fa-solid fa-users-gear"></i> Craftsman
+                            <i class="nav-icon fa-solid fa-users-gear" style="color: #4adcff;"></i><span style="color: #ffc606; font-size: 16px; font-weight: bold">Craftsman</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('admin.city.index')}}">
-                            <i class=" nav-icon fa-solid fa-city"></i> Cities
-                        </a>
-                    </li>
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -273,4 +214,3 @@
         </div>
         <!-- /.sidebar -->
     </aside>
-

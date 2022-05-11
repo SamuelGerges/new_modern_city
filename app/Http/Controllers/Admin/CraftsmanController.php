@@ -19,7 +19,7 @@ class CraftsmanController extends Controller
     public function index()
     {
 
-        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'work_state', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
+        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'status', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
 
         return view('admin/craftsmen/index')->with($data);
     }
@@ -27,14 +27,10 @@ class CraftsmanController extends Controller
 
     public function create_or_edit($id = null, Request $request)
     {
-
         if($id != NULL){
-
             /************** Edit Craftsman info ***************/
             if($request['data'] !== null){
-
                 if ($request['data']['password'] != null){
-
                     $edit_password_rule = ['required', 'min:6', 'string'];
                     $data = $request->validate(Craftsman::validation($id, $edit_password_rule));
                     $data['data']['password']  = bcrypt($data['data']['password']);
@@ -43,25 +39,18 @@ class CraftsmanController extends Controller
                     $data = $request->validate(Craftsman::validation($id));
                     unset($data['data']['password']);
                 }
-
-
-
-                if(isset($request['data']['craftsman_img']['url']) && Craftsman::findOrFail($id)->craftsman_img != null){
-                    // delete and create new file
-                    $img_obj = Craftsman::findOrFail($id)->craftsman_img;
-                    $img_obj = json_decode($img_obj);
-                    $old_img_name = $img_obj->url;
-
+                if(isset($request['data']['craftsman_img'])){
+                    if(empty(Craftsman::findOrFail($id)->craftsman_img)){
+                        $old_img_name = null;
+                    }
+                    else{
+                        // delete and create new file
+                        $img_obj = Craftsman::findOrFail($id)->craftsman_img;
+                        $img_obj = json_decode($img_obj);
+                        $old_img_name = $img_obj->url;
+                    }
+                    $data['data'] = $this->single_img_upload($data['data'],'craftsman_img','craftsmen', $old_img_name,'craftsman_avatar_img');
                 }
-                else{
-                    $old_img_name = null;
-                }
-
-
-
-                $data['data'] = $this->single_img_upload($data['data'],'craftsman_img','craftsman_img_avatar_img','craftsmen', $old_img_name);
-
-
 
                 Craftsman::findOrFail($id)->update($data['data']);
                 return redirect(route('admin.craft.index'));
@@ -84,7 +73,7 @@ class CraftsmanController extends Controller
                 $data = $request->validate(Craftsman::validation($id));
                 $data['data']['password']  = bcrypt($data['data']['password']);
 
-                $data['data'] = $this->single_img_upload($data['data'],'craftsman_img','craftsman_img_avatar_img','craftsmen');
+                $data['data'] = $this->single_img_upload($data['data'],'craftsman_img','craftsmen', null, 'craftsman_avatar_img');
 
                 Craftsman::create($data['data']);
                 return redirect(route('admin.craft.index'));

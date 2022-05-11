@@ -32,19 +32,20 @@ class PlaceTypeController extends Controller
 
                 $data = $request->validate(PlaceType::validation($id));
 
-                if(isset($request['data']['place_type_img']['url']) && PlaceType::findOrFail($id)->place_type_img != null){
-                    // delete and create new file
-                    $img_obj = PlaceType::findOrFail($id)->place_type_img;
-                    $img_obj = json_decode($img_obj);
-                    $old_img_name = $img_obj->url;
-
+                if(isset($request['data']['place_type_img'])) {
+                    if (empty(PlaceType::findOrFail($id)->place_type_img)) {
+                        $old_img_name = null;
+                    }
+                    else{
+                        $img_obj = PlaceType::findOrFail($id)->place_type_img;
+                        $img_obj = json_decode($img_obj);
+                        $old_img_name = isset($img_obj->url) ? $img_obj->url : null;
+                    }
+                    $data['data'] = $this->single_img_upload($data['data'],'place_type_img','places_types', $old_img_name, 'place_type_img');
                 }
-                else{
-                    $old_img_name = null;
-                }
 
 
-                $data['data'] = $this->single_img_upload($data['data'],'place_type_img','place_type_img','places_types', $old_img_name);
+
 
 
                 PlaceType::findOrFail($id)->update($data['data']);
@@ -64,8 +65,7 @@ class PlaceTypeController extends Controller
 
                 $data = $request->validate(PlaceType::validation($id));
 
-                $data['data'] = $this->single_img_upload($data['data'],'place_type_img','place_type_img','places_types');
-
+                $data['data'] = $this->single_img_upload($data['data'],'place_type_img','places_types', null, 'place_type_img');
                 PlaceType::create($data['data']);
                 return redirect(route('admin.place_type.index'));
 

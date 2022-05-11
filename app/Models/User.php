@@ -15,9 +15,10 @@ class User extends Authenticatable implements JWTSubject
     protected $primaryKey = 'user_id';
     protected $guarded = ['user_id','user_group_id','city_id','token'];
     protected $fillable = [
-        'first_name', 'last_name', 'password', 'phone', 'address','user_group_id', 'city_id','email', 'gender','token','user_img'
+        'first_name', 'last_name', 'password', 'phone',
+        'address','user_group_id', 'city_id','email', 'gender','token','user_img'
     ];
-    protected $hidden = ['created_at','updated_at','password'];
+    protected $hidden = ['created_at','user_img','updated_at','password'];
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -27,16 +28,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
-    public function show_user_type($email)
-    {
-        $type = DB::table('users')
-            ->select(['users.user_group_id', 'users_groups.user_group_name'])
-            ->join('users_groups', 'users.user_group_id', '=', 'users_groups.user_group_id')
-            ->where('users.email', '=',  $email )
-            ->first();
-        return $type;
-    }
+    // TODO :: Boiar
     public function show_user_city($city_id)
     {
 
@@ -54,6 +46,19 @@ class User extends Authenticatable implements JWTSubject
             ->value('user_group_name');
         return $group;
     }
+
+    public function show_user_type($email)
+    {
+
+        $type = DB::table('users')
+            ->select(['users.user_group_id', 'users_groups.user_group_name'])
+            ->join('users_groups', 'users.user_group_id', '=', 'users_groups.user_group_id')
+            ->where('users.email', '=',  $email )
+            ->first();
+
+        return $type;
+    }
+
     protected static function validation($user_id = null, $edit_password_rule = []){
 
 
@@ -69,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
             /************** create validation  ***************/
             $email_rule = Rule::unique('users', 'email');
             $phone_rule = Rule::unique('users', 'phone');
-            $password_rule = ['required', 'min:4', 'string'];
+            $password_rule = ['required', 'min:6', 'string'];
             $confirm_password_rule = ['required', 'same:data.password'];
 
         }
@@ -92,6 +97,10 @@ class User extends Authenticatable implements JWTSubject
 
     }
 
+    // TODO :: Boiar
+
+
+
 
 
     // TODO return Data OF USER
@@ -101,5 +110,17 @@ class User extends Authenticatable implements JWTSubject
             ->select('user_id','first_name', 'last_name', 'phone', 'address', 'city_id','email', 'gender','user_img')
             ->where('user_id','=',$user_id)->get();
         return $user;
+    }
+
+    public static function show_datails_of_user($user_id)
+    {
+        // TODO: return details of place
+
+        $user_details = DB::table('users')
+            ->select('user_id','city_id','first_name', 'last_name', 'email', 'gender',
+                'address', 'phone','user_img')
+            ->where('user_id','=',$user_id)
+            ->get();
+        return $user_details;
     }
 }

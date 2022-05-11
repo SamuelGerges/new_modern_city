@@ -33,18 +33,21 @@ class CraftsmanTypeController extends Controller
                 $data = $request->validate(CraftsmanType::validation($id));
 
 
-                if(isset($request['data']['craftsman_type_img']['url']) && CraftsmanType::findOrFail($id)->craftsman_type_img != NULL){
-                    // delete and create new file
+                if(isset($request['data']['craftsman_type_img'])){
 
-                    $img_obj = CraftsmanType::findOrFail($id)->craftsman_type_img;
-                    $img_obj = json_decode($img_obj);
-                    $old_img_name = $img_obj->url;
+                    if(empty(CraftsmanType::findOrFail($id)->craftsman_type_img)){
+                        $old_img_name = null;
+                    }
+                    else {
+
+                        $img_obj = CraftsmanType::findOrFail($id)->craftsman_type_img;
+                        $img_obj = json_decode($img_obj);
+                        $old_img_name = $img_obj->url;
+                    }
+                    $data['data'] = $this->single_img_upload($data['data'],'craftsman_type_img','craftsmen_types', $old_img_name, 'craftsman_type_img');
 
                 }
-                else{
-                    $old_img_name = null;
-                }
-                $data['data'] = $this->single_img_upload($data['data'],'craftsman_type_img','craftsman_type_img','craftsmen_types', $old_img_name);
+
 
 
 
@@ -65,7 +68,7 @@ class CraftsmanTypeController extends Controller
 
                 $data = $request->validate(CraftsmanType::validation($id));
 
-                $data['data'] = $this->single_img_upload($data['data'],'craftsman_type_img','craftsman_type_img','craftsmen_types');
+                $data['data'] = $this->single_img_upload($data['data'],'craftsman_type_img','craftsmen_types', null, 'craftsman_type_img');
 
                 CraftsmanType::create($data['data']);
                 return redirect(route('admin.craft_type.index'));

@@ -18,17 +18,13 @@ class UserGroup extends Model
     protected $hidden = [
     ];
 
-    public function users()
-    {
-        return $this->hasMany(User::class,'user_group_id');
-    }
 
 
     protected static function validation($group_id = null){
 
 
 
-        if($group_id !== NULL){
+        if($group_id != NULL){
             $rule = Rule::unique('users_groups', 'user_group_name')->ignore($group_id, 'user_group_id');
         }
         else{
@@ -39,6 +35,4 @@ class UserGroup extends Model
             'data.user_group_name'  => ['required', 'string', 'max:50', $rule]
         ];
     }
-
-
 }

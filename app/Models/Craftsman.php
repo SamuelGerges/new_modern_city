@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Facades\DB;
-use Dotenv\Validator;
 use Illuminate\Validation\Rule;
 
 class Craftsman extends Authenticatable implements JWTSubject
@@ -15,19 +14,33 @@ class Craftsman extends Authenticatable implements JWTSubject
     protected $primaryKey = 'craftsman_id';
     protected $guarded = ['craftsman_id','city_id','craftsman_type_id','token'];
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'gender', 'password', 'address', 'phone', 'status','craftsman_type_id',
+       'first_name', 'last_name', 'email', 'gender', 'password', 'address', 'phone', 'status','craftsman_type_id',
         'city_id', 'description','craftsman_img','token',
     ];
 
 
     protected $hidden = [
-        'password','created_at','updated_at',
+        'password','craftsman_img','created_at','updated_at',
     ];
+
 
     public function getStatusAttribute($val)
     {
         return $val === 0 ? 'Not Active' : 'Active';
     }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+
+
 
     public function show_craftsman_city($city_id)
     {
@@ -94,17 +107,6 @@ class Craftsman extends Authenticatable implements JWTSubject
 
     }
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-
 
     public static function show_craftsman_by_type($craftsman_type_id)
     {
@@ -116,20 +118,29 @@ class Craftsman extends Authenticatable implements JWTSubject
             ->get();
         return $crafts;
     }
-
     public static function show_datails_of_craftsman($crafts_id)
     {
         // TODO: return details of place
 
         $craftsman_details = DB::table('craftsmen')
-            ->select('first_name', 'last_name', 'email', 'gender',
+            ->select('craftsman_id','first_name', 'last_name', 'email', 'gender',
                 'address', 'phone', 'status','craftsman_type_id',
                 'city_id', 'description','craftsman_img')
             ->where('craftsman_id','=',$crafts_id)
             ->get();
         return $craftsman_details;
     }
-
+    public static function show_rate_craftsman($craftsman_id){
+        $rate = DB::table('rate_craftsmen')
+            ->where('craftsman_id', '=', $craftsman_id);
+        if($rate->count() > 0){
+            $rate_value = (int)round($rate->sum('rate') / $rate->count() );
+            return $rate_value;
+        }
+        else{
+            return 0;
+        }
+    }
 
     // TODO return Data OF USER
     public static function show_data_of_craftsman($craftsman_id)

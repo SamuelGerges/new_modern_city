@@ -1,42 +1,43 @@
 
 
+function images_preview(input_file_id, input_file_name, holder_img_id, func_style_img, func_style_input_text, type_file = null, object_name_has_slider = null) {
 
-function image_preview(input_file_id, input_file_name, holder_img_id, func_style_img_name, input_text_style_name, type_file = null, object_has_slider_name = null) {
-    // div will hold img
+    // holder_img_id ==> div will hold img
     // type_file ( slider or image )
-    // func_style_img_name ==> css func name for image or slider
-    // input_text_style_name => col-md-3 pr-md-1 or col-md-6 pr-md-1
+    // func_style_img ==> css func name for image or slider
+    // func_style_input_text=> col-md-3 pr-md-1 or col-md-6 pr-md-1
 
 
+    $("#"+input_file_id).on('change', function () {
 
-    $(input_file_id).on('change', function () {
-
-        alert(input_file_id + input_file_name);
+        console.log(input_file_id, input_file_name, holder_img_id);
         if (this.files) {
-            let count_all_files = this.files.length;
-            let img_holder = $(holder_img_id);
+            let count_of_files = this.files.length;
+            let img_holder = $("#"+holder_img_id);
             let count_current_files;
+
+
 
             let div = 'col-md-6 pr-md-1';
 
             if(type_file === 'slider'){
-                count_current_files = parseInt('<?= count($'+ object_has_slider_name + '->' + input_file_name+ '?>');  //count slider images
-                count_all_files = count_all_files + count_current_files;
+                count_current_files = parseInt('<?= count($'+ object_name_has_slider + '->' + input_file_name+ '?>');  //count slider images
+                count_of_files = count_of_files + count_current_files;
             }
             else {
                 count_current_files = 0;
             }
 
-            for( let i = count_current_files ; i < count_all_files; i++) {
+            for( let i = count_current_files ; i < count_of_files; i++) {
                 let reader = new FileReader();
                 reader.onload = function () {
                     let image = $("<img />", {
                         "src": this.result,
-                        "class": func_style_img_name ,
+                        "class": func_style_img ,
                     });
                     if( type_file === 'slider'){
                         let imgd_div = $('<div>',{
-                            class: input_text_style_name,
+                            class: func_style_input_text,
                         });
                         image.appendTo(imgd_div);
                         image.appendTo(img_holder);
@@ -55,7 +56,7 @@ function image_preview(input_file_id, input_file_name, holder_img_id, func_style
                         });
 
                         let title = $('<div >',{
-                            class: input_text_style_name,
+                            class: func_style_input_text,
                         });
                         label_title.appendTo(title);
                         input_title.appendTo(title);
@@ -71,7 +72,7 @@ function image_preview(input_file_id, input_file_name, holder_img_id, func_style
                             "class": "form-control"
                         });
                         let alt = $('<div >',{
-                            class: input_text_style_name,
+                            class: func_style_input_text,
                         });
                         label_alt.appendTo(alt);
                         input_alt.appendTo(alt);
@@ -94,40 +95,9 @@ function image_preview(input_file_id, input_file_name, holder_img_id, func_style
 }
 
 
-function avatar_img_preview(input_file_id, img_holder_id, img_style_func_name, img_id) {
 
 
 
-
-    $(input_file_id).on('change', function () {
-        if (this.files) {
-            let image_holder = $(img_holder_id);
-            let image_id = $('#'+img_id);
-
-            console.log(image_id);
-            console.log(input_file_id);
-
-            let reader = new FileReader();
-
-
-            reader.onload = function () {
-                $(image_id).remove();
-                $("<img />", {
-                    "src": this.result,
-                    "class": img_style_func_name,
-                    "id": img_id
-                }).appendTo(image_holder);
-            };
-            image_holder.show();
-            reader.readAsDataURL($(this)[0].files[0]);
-
-        }
-        else {
-            alert("This browser does not support FileReader.");
-        }
-    });
-
-}
 
 
 

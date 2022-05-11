@@ -20,7 +20,6 @@ class UserGroupController extends Controller
         return view('admin/users_groups/index')->with($data);
     }
 
-
     public function create_or_edit($id = null, Request $request)
     {
 

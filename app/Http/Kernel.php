@@ -65,6 +65,8 @@ class Kernel extends HttpKernel
         'admin_auth' => \App\Http\Middleware\AdminAuth::class,
         'userToken' => \App\Http\Middleware\UserToken::class,
         'craftsmanToken' => \App\Http\Middleware\CraftsmanToken::class,
+        'guard' => \App\Http\Middleware\CheckAuth::class,
+
 
 
     ];

@@ -77,14 +77,14 @@
 
                                 }
                                 else{
-                                    $img_url = asset('admin/site_imgs/avatar_craftsman.png');
+                                    $img_url = asset('admin/site_imgs/craftsman_type.png');
                                     $img_alt = 'craftsman_type_avatar_img';
                                 }
 
                             }
                             else{
                                 // create view
-                                $img_url = asset('admin/site_imgs/avatar_craftsman.png');
+                                $img_url = asset('admin/site_imgs/craftsman_type.png');
                                 $img_alt = 'craftsman_type_img';
                             }
 

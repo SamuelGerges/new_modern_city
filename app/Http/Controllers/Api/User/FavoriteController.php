@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Place;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use App\Models\User;
 use App\Traits\GeneralTrait;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 class FavoriteController extends Controller
 {
     use GeneralTrait;
+
+
 
     public function ShowFavorite(Request $request)
     {
@@ -26,8 +30,37 @@ class FavoriteController extends Controller
             return $this->returnValidationError($error, $validator_user);
         }
         $user_id = (int)$user['user_id'];
-        $data  = Favorite::show_favourite_list($user_id);
-        return $this->returnData('Places Favourite',$data);
+        $place_data  = json_decode(Favorite::show_favourite_list($user_id),true);
+
+        if(!empty($place_data)) {
+            $data_counter = count($place_data);
+            for ($i = 0; $i < $data_counter; $i++){
+                /************ rate statments **************/
+                $place_id = $place_data[$i]['place_id'];
+                $place_data[$i]['place_rate'] = Place::show_rate_place($place_id);
+                $place_data[$i]['place_state'] = Place::show_place_state($place_id);
+
+                /************* place Small img statments **************/
+                if (!is_null($place_data[$i]['small_img'])) {
+                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
+                    if (Storage::disk('uploads')->exists('places/' . $place_data[$i]['small_img'])) {
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
+                    } else {
+                        $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
+                    }
+                } else {
+                    $place_data_url = asset('admin/site_imgs/place_small_img.png');
+                    $place_data['small_img'] = $place_data_url;
+                }
+
+        }
+            return $this->returnData('Places_Favourite',$place_data);
+        }
+        else{
+            return $this->returnError('404','This Place not Have Any Places Data');
+        }
     }
     public function AddToFavorite(Request $request)
     {
@@ -96,6 +129,5 @@ class FavoriteController extends Controller
         else{
             return $this->returnError('404','Please Insert Place Id');
         }
-        /* return response()->json([$query]);*/
     }
 }

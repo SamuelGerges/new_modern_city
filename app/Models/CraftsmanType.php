@@ -21,11 +21,12 @@ class CraftsmanType extends Model
     public $timestamps = true;
 
 
+
     protected static function validation($craftsman_id = null){
 
 
 
-        if($craftsman_id !== NULL){
+        if($craftsman_id != NULL){
             $rule = Rule::unique('craftsmen_types', 'craftsman_type_name')->ignore($craftsman_id, 'craftsman_type_id');
         }
         else{

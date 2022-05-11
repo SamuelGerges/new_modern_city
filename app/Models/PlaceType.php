@@ -17,9 +17,12 @@ class PlaceType extends Model
     protected $hidden = ['created_at','updated_at'];
 
 
+
     protected static function validation($place_id = null){
 
-        if($place_id !== NULL){
+
+
+        if($place_id != NULL){
             $rule = Rule::unique('places_types', 'place_type_name')->ignore($place_id, 'place_type_id');
         }
         else{
@@ -32,12 +35,27 @@ class PlaceType extends Model
         ];
     }
 
+
+    /*************** Aida func ************/
+    public static function places($place_type_id)
+    {
+        /*************** return all places ****************/
+        $places = DB::table('places')
+            ->select('places.place_id', 'places.place_name')
+            ->join('places_types', 'places.place_id', '=', 'places_types.place_type_id')
+            ->where('places_types.place_type_id' , '=', $place_type_id)
+            ->get();
+
+        return $places;
+    }
+
+
     public static function show_all_places_types()
     {
         /*************** return all places types ****************/
         $all_places_types = DB::table('places_types')
-                            ->select('place_type_id','place_type_name', 'place_type_img')
-                            ->get();
+            ->select('place_type_id','place_type_name', 'place_type_img')
+            ->get();
         return $all_places_types;
     }
 

@@ -10,22 +10,49 @@ use App\Models\Favorite;
 use App\Models\User;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PlaceTypeController extends Controller
 {
     use GeneralTrait;
 
-    // show_all_places_types => (token) => check is user
-    // show_places_by_type => (token && place_type_id) ==>
-
     public function ShowAllPlacesTypes(Request $request)
     {
         /* todo  func to check is user by token */
         $token = $request->token;
         $user =User::select('user_id')->where('token',$token)->first();
-        $data = PlaceType::show_all_places_types();
-        return $this->returnData('All_Places_Types',$data);
+
+        $place_type = json_decode(PlaceType::show_all_places_types(),true);
+
+        if(empty($place_type))
+        {
+            return $this->returnError('404','The List Of Place Type is Empty');
+        }
+        else
+        {
+            $counter = count($place_type);
+
+            for ($i = 0; $i < $counter; $i++) {
+                if (!is_null($place_type[$i]['place_type_img'])) {
+                    $place_type[$i]['place_type_img'] = json_decode($place_type[$i]['place_type_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('places_types/'.$place_type[$i]['place_type_img'])){
+                        $place_type_url[$i] = asset('uploads/places_types/' . $place_type[$i]['place_type_img']);
+                        $place_type[$i]['place_type_img'] = $place_type_url[$i];
+                    }
+                    else{
+
+                        unset($place_type[$i]);
+                    }
+                } else {
+                    unset($place_type[$i]);
+
+                }
+
+            }
+
+            return $this->returnData('All_Places_Types',$place_type);
+        }
     }
 
 

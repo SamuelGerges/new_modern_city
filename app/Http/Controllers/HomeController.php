@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CraftsmanType;
+use App\Models\Place;
+use App\Models\PlaceType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use function GuzzleHttp\Psr7\str;
 
 class HomeController extends Controller
 {
@@ -23,8 +29,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+//        $validator = Validator::make($request->all(), [
+//            'craftsman_img' => 'image|mimes:jpg,jpeg,png'
+//        ]);
+//        if ($validator->fails()) {
+//            $code = $this->returnCodeAccordingToInput($validator);
+//            return $this->returnValidationError($code, $validator);
+//        }
+
+        return view('welcome');
     }
+
 
 
     public function test()

@@ -18,7 +18,6 @@ class UserToken
      */
     public function handle($request, Closure $next)
     {
-
         if (isset($request->token)){
             $token = $request->token;
             $user = User::select('user_id')->where('token', $token)->first();
@@ -28,11 +27,12 @@ class UserToken
             }
             else{
                 //not auth ==> error
-                return $this->returnError('404','not auth');
+                return $this->returnError('401','Unauthorized');
             }
         }
         else {
             // not aut ==> error
-            return $this->returnError('404','not auth');
-        }    }
+            return $this->returnError('401','Unauthorized');
+        }
+    }
 }

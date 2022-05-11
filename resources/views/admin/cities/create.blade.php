@@ -29,7 +29,7 @@
                         </div>
                         <div class="card-body">
                             <?php !isset($city->city_id)  ? $id = '' : $id = $city->city_id ?>
-                            <form class="form-group" method="post" action="{{ route('admin.city.edit', $id) }}">
+                            <form class="form-group" method="post" action="{{ route('admin.city.edit', $id) }}" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="row mb-3">
@@ -38,23 +38,8 @@
                                         <input type="text" name="data[city_name]" class="form-control" placeholder="Enter City Name" value="{{ !isset($city->city_name) ? '' : $city->city_name }}">
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6 pr-md-1">
-                                        <label>Upload Photo <span style="color: red;">@To do img</span></label>
-                                        <div class="custom-file">
-                                            <input type="file"  class="custom-file-input" id="exampleInputFile">
-                                            <label class="custom-file-label" for="exampleInputFile">Choose photo</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-
                                 <button type="submit" class="btn btn-success float-right">{{  !isset($city->city_id)  ? 'Create' : 'Edit'}}</button>
                             </form>
-
-
                         </div>
                         <!-- /.card-body -->
                     </div>
