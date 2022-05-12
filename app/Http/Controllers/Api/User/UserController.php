@@ -37,9 +37,9 @@ class UserController extends Controller
                 'first_name'   => 'required|string|max:30',
                 'last_name'    => 'required|string|max:30',
                 'email'        => 'required|email|unique:users',
-                'gender'       => 'required|string|max:30',
+                'gender'       => 'nullable|string|max:30',
                 'password'     => 'required|min:6|max:40',
-                'address'      => 'required|string|max:30',
+                'address'      => 'nullable|string|max:30',
                 'phone'        => 'nullable|numeric|unique:users|digits:11',
             ]);
 
@@ -73,7 +73,7 @@ class UserController extends Controller
             'first_name'   => 'required|string|max:30',
             'last_name'    => 'required|string|max:30',
             'password'     => 'required|min:6|max:40',
-            'address'      => 'required|string|max:30',
+            'address'      => 'nullable|string|max:30',
             'phone'        => 'nullable|numeric|unique:users,phone,'.$user->user_id.',user_id|digits:11',
 
         ]);

@@ -25,34 +25,35 @@ class PlaceTypeController extends Controller
 
         $place_type = json_decode(PlaceType::show_all_places_types(),true);
 
-        if(empty($place_type))
-        {
-            return $this->returnError('404','The List Of Place Type is Empty');
-        }
-        else
-        {
+        $new_data = [];
+        if(!empty($place_type)) {
             $counter = count($place_type);
-
             for ($i = 0; $i < $counter; $i++) {
                 if (!is_null($place_type[$i]['place_type_img'])) {
                     $place_type[$i]['place_type_img'] = json_decode($place_type[$i]['place_type_img'], true)['url'];
                     if(Storage::disk('uploads')->exists('places_types/'.$place_type[$i]['place_type_img'])){
-                        $place_type_url[$i] = asset('uploads/places_types/' . $place_type[$i]['place_type_img']);
+                        $place_type_url[$i] = asset('uploads/places_types/' .$place_type[$i]['place_type_img']);
                         $place_type[$i]['place_type_img'] = $place_type_url[$i];
                     }
                     else{
-
-                        unset($place_type[$i]);
+                        $place_type_url[$i] = asset('admin/site_imgs/place_type.png');
+                        $place_type[$i]['place_type_img'] = $place_type_url[$i];
                     }
-                } else {
-                    unset($place_type[$i]);
-
+                }
+                else {
+                    $place_type_url[$i] = asset('admin/site_imgs/place_type.png');
+                    $place_type[$i]['place_type_img'] = $place_type_url[$i];
                 }
 
+                $new_data[$i] = $place_type[$i];
             }
+            return $this->returnData('All_Places_Types',$new_data);
 
-            return $this->returnData('All_Places_Types',$place_type);
         }
+        else {
+            return $this->returnError('404','The List Of Place Type is Empty');
+        }
+
     }
 
 

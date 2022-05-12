@@ -17,7 +17,7 @@ class Favorite extends Model
     {
         $favourite_list =  DB::table('places')->select('places.place_id',
             'place_name', 'phone', 'address', 'geo_location_lat', 'geo_location_long','description',
-             'open_time', 'close_time', 'small_img','favorite_places_lists.user_id'
+             'open_time', 'close_time', 'big_img','favorite_places_lists.user_id'
         )->join('favorite_places_lists',
                 'places.place_id', '=',
                 'favorite_places_lists.place_id')

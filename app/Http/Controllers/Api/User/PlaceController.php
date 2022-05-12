@@ -36,11 +36,12 @@ class PlaceController extends Controller
             $new_data = [];
             if(!empty($place_data)) {
                 $data_counter = count($place_data);
-                for ($i = 0; $i < $data_counter; $i++){
+                for ($i = 0; $i < $data_counter; $i++)
+                {
                     /**         Rate Place       **/
                     $place_id = $place_data[$i]['place_id'];
                     $place_data[$i]['place_rate']  = Place::show_rate_place($place_id);
-
+                    $place_data[$i]['place_state'] = Place::show_place_state($place_id);
                     /**         Big Image For Place       **/
 
                     if (!is_null($place_data[$i]['big_img'])) {
@@ -61,7 +62,7 @@ class PlaceController extends Controller
 
                     $new_data[$i] = $place_data[$i];
                 }
-                return $this->returnData('Craftsmans_By_Craftsman_Type' ,$new_data);
+                return $this->returnData('places_by_place_type' ,$new_data);
             }
             else{
                 return $this->returnError('404','This Place Type Not Have Any Places Data');
@@ -71,6 +72,7 @@ class PlaceController extends Controller
             return $this->returnError('404','Please Insert Place Id');
         }
     }
+
 
     public function ShowDetailsOfPlace(Request $request)
     {
@@ -166,6 +168,84 @@ class PlaceController extends Controller
     }
 
 
+    public function ShowFamousPlaces(Request $request)
+    {
+        $token = $request->token;
+        $user = User::select('user_id')->where('token',$token)->first();
+        $place_data = json_decode(Place::show_famous_places(),true);
+
+        $new_data = [];
+        if(!empty($place_data))
+        {
+            $counter = count($place_data);
+            for($i = 0; $i< $counter; $i++)
+            {
+                if (!is_null($place_data[$i]['big_img']))
+                {
+                    $place_data[$i]['big_img'] = json_decode($place_data[$i]['big_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['big_img'])){
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['big_img']);
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                    }
+                    else{
+                        $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                    }
+                } else {
+                    $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                    $place_data[$i]['big_img'] = $place_data_url[$i];
+                }
+
+                $new_data[$i] = $place_data[$i];
+            }
+
+            return $this->returnData('famous_places',$new_data);
+        }
+        else
+        {
+            return $this->returnError('404','The List Of Famous Places is Empty');
+        }
+    }
+
+
+
+    public function ShowPlacesAds(Request $request)
+    {
+        $token = $request->token;
+        $user = User::select('user_id')->where('token',$token)->first();
+        $place_data = json_decode(Place::show_advertisement(),true);
+
+        $counter = count($place_data);
+        $new_data = [];
+        if(!empty($place_data))
+        {
+            for($i = 0; $i< $counter; $i++){
+                if(!is_null($place_data[$i]['big_img'])) {
+                    $place_data[$i]['big_img'] = json_decode($place_data[$i]['big_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['big_img'])){
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['big_img']);
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                    }
+                    else{
+                        $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                    }
+                } else {
+                    $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                    $place_data[$i]['big_img'] = $place_data_url[$i];
+                }
+
+                $new_data[$i] = $place_data[$i];
+            }
+            return $this->returnData('show_advertisement',$new_data);
+        }
+        else
+        {
+            return $this->returnError('404','The List Of Adevertisement For Places is Empty');
+        }
+    }
+
+
     public function AddRatePlace(Request $request)
     {
         $token = $request->token;
@@ -212,69 +292,6 @@ class PlaceController extends Controller
             return $this->returnError('404','Please Insert Place Id');
         }
     }
-    public function ShowFamousPlaces(Request $request)
-    {
-        $token = $request->token;
-        $user = User::select('user_id')->where('token',$token)->first();
-
-        $place_data = json_decode(Place::show_famous_places(),true);
-        if(empty($place_data))
-        {
-            return $this->returnError('404','The List Of Famous Places is Empty');
-        }
-        else{
-            $counter = count($place_data);
-
-            for($i = 0; $i< $counter; $i++){
-                if (!is_null($place_data[$i]['small_img'])) {
-                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
-                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['small_img'])){
-                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
-                        $place_data[$i]['small_img'] = $place_data_url[$i];
-                    }
-                    else{
-                        unset($place_data[$i]);
-                    }
-                } else {
-                    unset($place_data[$i]);
-                }
-            }
-            return $this->returnData('famous_places',$place_data);
-        }
-    }
-    public function ShowPlacesAds(Request $request)
-    {
-        $token = $request->token;
-        $user = User::select('user_id')->where('token',$token)->first();
-        $place_data = json_decode(Place::show_advertisement(),true);
-
-        if(empty($place_data))
-        {
-            return $this->returnError('404','The List Of Adevertisement For Places is Empty');
-        }
-        else{
-            $counter = count($place_data);
-            for($i = 0; $i< $counter; $i++){
-                if(!is_null($place_data[$i]['small_img'])) {
-                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
-                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['small_img'])){
-                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
-                        $place_data[$i]['small_img'] = $place_data_url[$i];
-                    }
-                    else{
-                        unset($place_data[$i]);
-                    }
-                } else {
-                    unset($place_data[$i]);
-                }
-            }
-            return $this->returnData('show_advertisement',$place_data);
-        }
-    }
-
-
-
-
 
 
 

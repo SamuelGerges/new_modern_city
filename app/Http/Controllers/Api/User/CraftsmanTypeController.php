@@ -25,13 +25,10 @@ class CraftsmanTypeController extends Controller
 
         $crafts_type = json_decode(CraftsmanType::show_all_crafts_type(),true);
 
-        if(empty($crafts_type))
+        $new_data = [];
+        if(!empty($crafts_type))
         {
-            return $this->returnError('404','The List Of Craftsman Type is Empty');
-        }
-        else {
             $counter = count($crafts_type);
-
             for ($i = 0; $i < $counter; $i++) {
                 if (!is_null($crafts_type[$i]['craftsman_type_img'])) {
                     $crafts_type[$i]['craftsman_type_img'] = json_decode($crafts_type[$i]['craftsman_type_img'], true)['url'];
@@ -44,10 +41,15 @@ class CraftsmanTypeController extends Controller
                         $crafts_type[$i]['craftsman_type_img'] = $crafts_type_url[$i];                    }
                 } else {
                     $crafts_type_url[$i] = asset('admin/site_imgs/avatar_craftsman.png');
-                    $crafts_type[$i]['craftsman_type_img'] = $crafts_type_url[$i];                }
-
+                    $crafts_type[$i]['craftsman_type_img'] = $crafts_type_url[$i];
+                }
+                $new_data[$i] = $crafts_type[$i];
             }
-            return $this->returnData('All_Craftsman_Types',$crafts_type);
+            return $this->returnData('All_Craftsman_Types',$new_data);
+        }
+        else
+        {
+            return $this->returnError('404','The List Of Craftsman Type is Empty');
         }
     }
 }

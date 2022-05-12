@@ -112,7 +112,7 @@ class Place extends Model
     public static function show_famous_places()
     {
         $famous_places = DB::table('places')
-            ->select('place_id','small_img')
+            ->select('place_id','big_img')
             ->where('show_in_famous_places','=',1)
         ->get();
         return $famous_places;
@@ -121,7 +121,7 @@ class Place extends Model
     public static function show_advertisement()
     {
         $advertisement = DB::table('places')
-            ->select('place_id','small_img')
+            ->select('place_id','big_img')
             ->where('show_in_ads','=',1)
             ->get();
         return $advertisement;

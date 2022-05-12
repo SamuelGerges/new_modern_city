@@ -32,31 +32,38 @@ class FavoriteController extends Controller
         $user_id = (int)$user['user_id'];
         $place_data  = json_decode(Favorite::show_favourite_list($user_id),true);
 
-        if(!empty($place_data)) {
-            $data_counter = count($place_data);
-            for ($i = 0; $i < $data_counter; $i++){
+        $data_counter = count($place_data);
+
+        $new_data = [];
+        if(!empty($place_data))
+        {
+            for ($i = 0; $i < $data_counter; $i++)
+            {
                 /************ rate statments **************/
                 $place_id = $place_data[$i]['place_id'];
+
                 $place_data[$i]['place_rate'] = Place::show_rate_place($place_id);
                 $place_data[$i]['place_state'] = Place::show_place_state($place_id);
 
-                /************* place Small img statments **************/
-                if (!is_null($place_data[$i]['small_img'])) {
-                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
-                    if (Storage::disk('uploads')->exists('places/' . $place_data[$i]['small_img'])) {
-                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
-                        $place_data[$i]['small_img'] = $place_data_url[$i];
+
+                /************* place big img statments **************/
+                if (!is_null($place_data[$i]['big_img'])) {
+                    $place_data[$i]['big_img'] = json_decode($place_data[$i]['big_img'], true)['url'];
+                    if (Storage::disk('uploads')->exists('places/' . $place_data[$i]['big_img'])) {
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['big_img']);
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
                     } else {
-                        $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
-                        $place_data[$i]['small_img'] = $place_data_url[$i];
+                        $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                        $place_data[$i]['big_img'] = $place_data_url[$i];
                     }
                 } else {
-                    $place_data_url = asset('admin/site_imgs/place_small_img.png');
-                    $place_data['small_img'] = $place_data_url;
+                    $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
+                    $place_data[$i]['big_img'] = $place_data_url[$i];
                 }
+                $new_data[$i] = $place_data[$i];
 
-        }
-            return $this->returnData('Places_Favourite',$place_data);
+            }
+            return $this->returnData('Places_Favourite',$new_data);
         }
         else{
             return $this->returnError('404','This Place not Have Any Places Data');

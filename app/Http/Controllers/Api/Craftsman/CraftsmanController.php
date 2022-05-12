@@ -35,9 +35,9 @@ class CraftsmanController extends Controller
                 'first_name' => 'required|string|max:30',
                 'last_name' => 'required|string|max:30',
                 'email' => 'required|email|unique:craftsmen',
-                'gender' => 'required|string|max:30',
+                'gender' => 'nullable|string|max:30',
                 'password' => 'required|min:6|max:40',
-                'address' => 'required|string|max:30',
+                'address' => 'nullable|string|max:30',
                 'geo_location_lat'  => 'nullable',
                 'geo_location_long' => 'nullable',
                 'phone' => 'nullable|numeric|unique:craftsmen|digits:11',
@@ -115,8 +115,8 @@ class CraftsmanController extends Controller
             'first_name' => 'required|string|max:30',
             'last_name' => 'required|string|max:30',
             'password' => 'required|min:6|max:40',
-            'address' => 'required|string|max:30',
-            'phone' => 'numeric|numeric|unique:craftsmen,phone,'.$craftsman->craftsman_id.',craftsman_id|digits:11',
+            'address' => 'nullable|string|max:30',
+            'phone' => 'nullable|numeric|unique:craftsmen,phone,'.$craftsman->craftsman_id.',craftsman_id|digits:11',
             'description' => 'nullable|string',
 
         ]);
@@ -133,6 +133,7 @@ class CraftsmanController extends Controller
         $updated_data = Craftsman::find($craftsman->craftsman_id)->update($data);
         return $this->returnSuccessMessage('200','successfully updated');
     }
+
     public function EditStatus(Request $request)
     {
         $token = $request->token;
