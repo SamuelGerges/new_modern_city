@@ -9,6 +9,8 @@ Route::namespace('Api\User')->group(function(){
 
     Route::post('store_user','UserController@RegisterUser')->name('StoreUser');
 
+    Route::get('get_cities','UserController@GetCity');
+
 
     Route::middleware('userToken:api_user')->group(function (){
         Route::post('edit_user','UserController@EditUser')->name('EditUser');
@@ -57,11 +59,12 @@ Route::namespace('Api\User')->group(function(){
 });
 
 
+
 Route::namespace('Api\Craftsman')->group(function(){
 
     // TODO:: URL OF Craftsman
     Route::post('store_crafts','CraftsmanController@RegisterCraftsman')->name('StoreCraftsman');
-
+    Route::get('get_crafts_type','CraftsmanController@GetCraftsmanType');
 
 
 
@@ -84,6 +87,7 @@ Route::namespace('Api\Craftsman')->group(function(){
 
     });
 });
+
 
 
 Route::namespace('Api\Auth')->group(function () {

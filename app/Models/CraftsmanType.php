@@ -46,4 +46,11 @@ class CraftsmanType extends Model
         return $crafts_type;
     }
 
+    public static function get_craftsman_type()
+    {
+        $craftsmen_types = DB::table('craftsmen_types')->select('craftsman_type_id','craftsman_type_name')
+            ->get();
+        return $craftsmen_types;
+    }
+
 }

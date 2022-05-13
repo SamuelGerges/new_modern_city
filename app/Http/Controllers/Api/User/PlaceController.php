@@ -180,20 +180,20 @@ class PlaceController extends Controller
             $counter = count($place_data);
             for($i = 0; $i< $counter; $i++)
             {
-                if (!is_null($place_data[$i]['big_img']))
+                if (!is_null($place_data[$i]['small_img']))
                 {
-                    $place_data[$i]['big_img'] = json_decode($place_data[$i]['big_img'], true)['url'];
-                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['big_img'])){
-                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['big_img']);
-                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['small_img'])){
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
                     }
                     else{
-                        $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
-                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                        $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
                     }
                 } else {
-                    $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
-                    $place_data[$i]['big_img'] = $place_data_url[$i];
+                    $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
+                    $place_data[$i]['small_img'] = $place_data_url[$i];
                 }
 
                 $new_data[$i] = $place_data[$i];
@@ -220,19 +220,19 @@ class PlaceController extends Controller
         if(!empty($place_data))
         {
             for($i = 0; $i< $counter; $i++){
-                if(!is_null($place_data[$i]['big_img'])) {
-                    $place_data[$i]['big_img'] = json_decode($place_data[$i]['big_img'], true)['url'];
-                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['big_img'])){
-                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['big_img']);
-                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                if(!is_null($place_data[$i]['small_img'])) {
+                    $place_data[$i]['small_img'] = json_decode($place_data[$i]['small_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('places/'.$place_data[$i]['small_img'])){
+                        $place_data_url[$i] = asset('uploads/places/' . $place_data[$i]['small_img']);
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
                     }
                     else{
-                        $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
-                        $place_data[$i]['big_img'] = $place_data_url[$i];
+                        $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
+                        $place_data[$i]['small_img'] = $place_data_url[$i];
                     }
                 } else {
-                    $place_data_url[$i] = asset('admin/site_imgs/place_big_img.png');
-                    $place_data[$i]['big_img'] = $place_data_url[$i];
+                    $place_data_url[$i] = asset('admin/site_imgs/place_small_img.png');
+                    $place_data[$i]['small_img'] = $place_data_url[$i];
                 }
 
                 $new_data[$i] = $place_data[$i];

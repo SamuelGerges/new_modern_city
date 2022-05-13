@@ -174,4 +174,13 @@ class UserController extends Controller
         }
     }
 
+
+
+    public function GetCity()
+    {
+        $data_city = City::get_cities();
+        return $this->returnData('get_cities',$data_city);
+    }
+
+
 }

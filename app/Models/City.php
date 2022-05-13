@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class City extends Model
@@ -30,6 +31,14 @@ class City extends Model
         return [
             'data.city_name' => ['required', 'string', 'max:60', $rule]
         ];
+    }
+
+
+    public static function get_cities()
+    {
+        $city = DB::table('cities')->select('city_id','city_name')
+            ->get();
+        return $city;
     }
 
 }

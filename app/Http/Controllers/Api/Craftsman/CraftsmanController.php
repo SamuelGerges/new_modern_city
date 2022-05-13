@@ -156,6 +156,13 @@ class CraftsmanController extends Controller
     }
 
 
+    public function GetCraftsmanType()
+    {
+        $data_crafts_type = CraftsmanType::get_craftsman_type();
+        return $this->returnData('get_crafts_type',$data_crafts_type);
+    }
+
+
 
 
 
