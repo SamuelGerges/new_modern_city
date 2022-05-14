@@ -1,15 +1,6 @@
 @extends('admin/layout')
 @section('content')
 
-
-
-
-
-
-
-
-
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -83,8 +74,16 @@
                                     <div class="col-md-12 pr-md-1" id="google_map">
                                     </div>
                                 </div>
-                                <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDE7n1hAtyMeFOquwu3iKhUF4wpBh8qmOY&v=weekly&language=ar" >
+
+
+
+                                <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWqX-NuL2nbJcKobC-FUKfTfDGBVpL-e4&libraries=places&sensor=false">
+
                                 </script>
+
+
+
+
                                 <script type="text/javascript" src="{{asset('admin/my_files/maps.js')}}"></script>
 
                                 <div class="row mb-3">
