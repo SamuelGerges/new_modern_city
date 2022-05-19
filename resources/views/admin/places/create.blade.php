@@ -89,7 +89,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6 pr-md-1">
                                         <label>Description</label>
-                                        <textarea name="description" class="form-control"  rows="3"></textarea>
+                                        <textarea name="data[description]" class="form-control"  rows="3">{{ !isset($place->description) ? '' : $place->description }}</textarea>
                                     </div>
                                     <div class="col-md-6 pr-md-1">
                                         <label>City</label>

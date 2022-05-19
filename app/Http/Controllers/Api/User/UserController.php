@@ -25,13 +25,6 @@ class UserController extends Controller
 
     public function RegisterUser(Request $request)
     {
-
-        // req = null => cities  || req == val =>validation
-        if (is_null($request)) {
-            $data['cities'] = City::select('city_id', 'city_name')->get();
-            return response()->json($data['cities']);
-        }
-        else{
             $validator = Validator::make($request->all(),[
                 'city_id'      => 'required|exists:cities,city_id',
                 'first_name'   => 'required|string|max:30',
@@ -61,7 +54,7 @@ class UserController extends Controller
             );
             $user->save();
             return $this->returnData('data',$user,'User successfully registered');
-        }
+
     }
 
 
@@ -112,7 +105,7 @@ class UserController extends Controller
                 Storage::disk('uploads')->delete('users/'. $old_img_name);
             }
             $new_name =  $data['user_img']->hashName();
-            Image::make($data['user_img'])->resize(200,200)->save(public_path('uploads/users/'.$new_name));
+            Image::make($data['user_img'])->save(public_path('uploads/users/'.$new_name));
             $data['user_img'] = [
                 'alt' => 'user_image',
                 'url' => $new_name,

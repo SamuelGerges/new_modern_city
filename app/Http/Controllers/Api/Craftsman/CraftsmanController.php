@@ -24,11 +24,6 @@ class CraftsmanController extends Controller
 
     public function RegisterCraftsman(Request $request)
     {
-        if (is_null($request)) {
-            $data['cities'] = City::select('city_id', 'city_name')->get();
-            $data['crafts'] = CraftsmanType::select('craftsman_type_id', 'craftsman_type_name')->get();
-            return response()->json($data);
-        } else {
             $validator = Validator::make($request->all(), [
                 'craftsman_type_id' => 'required|exists:craftsmen_types,craftsman_type_id',
                 'city_id' => 'required|exists:cities,city_id',
@@ -62,7 +57,7 @@ class CraftsmanController extends Controller
             $craft->save();
             return $this->returnData('data',$craft ,'Craftsman successfully registered');
 
-        }
+
 
     }
 
@@ -90,7 +85,7 @@ class CraftsmanController extends Controller
                 Storage::disk('uploads')->delete('craftsmen/'. $old_img_name);
             }
             $new_name =  $data['craftsman_img']->hashName();
-            Image::make($data['craftsman_img'])->resize(80,80)->save(public_path('uploads/craftsmen/'.$new_name));
+            Image::make($data['craftsman_img'])->save(public_path('uploads/craftsmen/'.$new_name));
             $data['craftsman_img'] = [
                 'alt' => 'craftsman_image',
                 'url' => $new_name,

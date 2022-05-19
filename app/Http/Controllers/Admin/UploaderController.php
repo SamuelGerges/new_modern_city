@@ -26,7 +26,7 @@ trait UploaderController
             }
 
             $hashed_img_name = $data[$img_index_name]['url']->hashName();
-            Image::make($data[$img_index_name]['url'])->resize(200,200)->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name ));
+            Image::make($data[$img_index_name]['url'])->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name ));
             $data[$img_index_name]['url']   = $hashed_img_name;
             $data[$img_index_name] = json_encode($data[$img_index_name]);
 
@@ -76,7 +76,7 @@ trait UploaderController
             for($i = 0; $i < count($all_urls); $i++){
                 if(!Storage::disk('uploads')->exists($upload_dir_name.'/'. $all_urls[$i]) && file_exists($all_urls[$i])){
                     $hashed_img_name = $all_urls[$i]->hashName();
-                    Image::make($all_urls[$i])->resize(200,200)->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name));
+                    Image::make($all_urls[$i])->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name));
                 }
                 else{
                     $hashed_img_name  = $all_urls[$i];
@@ -106,7 +106,7 @@ function single_img_upload_api($data, $img_index_name, $upload_dir_name, $old_im
         }
 
         $hashed_img_name = $data[$img_index_name]->hashName();
-        Image::make($data[$img_index_name])->resize(200,200)->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name ));
+        Image::make($data[$img_index_name])->save(public_path('uploads/'. $upload_dir_name.'/'.$hashed_img_name ));
         $data[$img_index_name]['url']   = $hashed_img_name;
         $data[$img_index_name] = json_encode($data[$img_index_name]);
     }

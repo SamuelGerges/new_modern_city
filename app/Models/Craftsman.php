@@ -99,7 +99,7 @@ class Craftsman extends Authenticatable implements JWTSubject
             'data.work_state'        => ['required', 'integer', 'between:0,1'],
             'data.craftsman_type_id' => ['required', 'exists:craftsmen_types,craftsman_type_id'],
             'data.city_id'           => ['required', 'exists:cities,city_id'],
-            'data.description'       => ['string'],
+            'data.description'       => ['nullable', 'string'],
             'data.craftsman_img.url' => ['image', 'mimes:jpg,jpeg,png'],
             'data.craftsman_img.alt' => ['string'],
         ];

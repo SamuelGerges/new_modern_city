@@ -25,7 +25,7 @@ class Place extends Model
             'data.address'                => ['required', 'string', 'max:200'],
             'data.geo_location_lat'       => ['string'],
             'data.geo_location_long'      => ['string'],
-            'data.description'            => ['string'],
+            'data.description'            => ['nullable', 'string'],
             'data.show_in_ads'            => ['required', 'integer', 'between:0,1'],
             'data.show_in_famous_places'  => ['required', 'integer', 'between:0,1'],
             'data.open_time'              => ['date_format:H:i'],
