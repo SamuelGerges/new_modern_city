@@ -294,6 +294,34 @@ class PlaceController extends Controller
     }
 
 
+    /*
+    public function GetNearestPlace(Request $request)
+    {
+        $token = $request->token;
+        $latitude = $request->geo_location_lat;
+        $longtitude = $request->geo_location_long;
+        if (isset($request->place_type_name) && !is_null($request->place_type_name)) {
+            $place_id = (int) $request->place_id;
+            $validator = Validator::make($request->all(),[
+                'geo_location_lat' =>'required|numeric|exists:places,place_id',
+                'geo_location_long' =>'required|numeric',
+
+            ]);
+            if($validator->fails()){
+                $error = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($error, $validator);
+            }
+
+        }
+        else{
+            return $this->returnError('404','Please Insert Name OF PlaceType');
+        }
+        return response()->json($token);
+
+
+    }
+
+    */
 
 
 }

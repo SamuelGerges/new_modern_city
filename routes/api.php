@@ -8,7 +8,6 @@ Route::namespace('Api\User')->group(function(){
     // TODO:: URL OF USER
 
     Route::post('store_user','UserController@RegisterUser')->name('StoreUser');
-
     Route::get('get_cities','UserController@GetCity');
 
 
@@ -36,7 +35,7 @@ Route::namespace('Api\User')->group(function(){
             Route::post('show_details_of_place','PlaceController@ShowDetailsOfPlace');
             Route::post('show_famous_places','PlaceController@ShowFamousPlaces');
             Route::post('show_advertisement','PlaceController@ShowPlacesAds');
-
+            Route::post('get_nearest_place','PlaceController@GetNearestPlace');
 
         });
 
