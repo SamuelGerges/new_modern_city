@@ -150,41 +150,51 @@ function images_previews(input_file_id, holder_img_id, image_id, func_style_img,
                     };
                     img_holder.show();
                     reader.readAsDataURL(this.files[i - count_current_files]);
-
                 }
             }
-
         }
         else {
             alert("This browser does not support FileReader.");
         }
     });
-
-
-
-
-
 }
-
 
 function remover_slider_img(element) {
 
 
     let parent_div = element.parentNode.parentNode;
-    let deteted_value = parent_div.id;
+    let deleted_value = parent_div.id;
 
-    if(deteted_value.length === 0) {
+    if(deleted_value.length === 0) {
         parent_div.remove();
     }
     else {
         $('<input>').attr({
             type: 'hidden',
             name: 'data[slider_img][deleted_urls][]',
-            value: deteted_value,
+            value: deleted_value,
         }).appendTo($('#deleted_slider_imgs'));
         parent_div.remove();
     }
-
-
-
 }
+
+function say_hello_modal(modal_id) {
+
+    let id_of_model = $('#'+modal_id);
+    // Check if user saw the modal
+    let key = 'hadSayHelloModal',
+        hadModal = localStorage.getItem(key);
+
+    // Show the modal only if new user
+    if (!hadModal) {
+        id_of_model.modal('show');
+        setTimeout(function () {id_of_model.modal('hide');}, 3000);
+    }
+
+    // If modal is displayed, store that in localStorage
+    id_of_model.on('shown.bs.modal', function () {
+        localStorage.setItem(key, true);
+    });
+}
+
+

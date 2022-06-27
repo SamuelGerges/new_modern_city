@@ -15,12 +15,12 @@ class Craftsman extends Authenticatable implements JWTSubject
     protected $guarded = ['craftsman_id','city_id','craftsman_type_id','token'];
     protected $fillable = [
        'first_name', 'last_name', 'email', 'gender', 'password', 'address', 'phone', 'status','craftsman_type_id',
-        'city_id', 'description','craftsman_img','token',
+        'city_id', 'description','craftsman_img','craftsman_slider','token',
     ];
 
 
     protected $hidden = [
-        'password','craftsman_img','created_at','updated_at',
+        'password','craftsman_img','craftsman_slider','created_at','updated_at',
     ];
 
 
@@ -38,7 +38,6 @@ class Craftsman extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
 
 
 
@@ -118,6 +117,15 @@ class Craftsman extends Authenticatable implements JWTSubject
             ->get();
         return $crafts;
     }
+
+    public static function works_of_craftsman($crafts_id)
+    {
+        $craftsman_works = DB::table('craftsmen')
+            ->select('craftsman_slider')
+            ->where('craftsman_id','=',$crafts_id)
+            ->get();
+        return $craftsman_works;
+    }
     public static function show_datails_of_craftsman($crafts_id)
     {
         // TODO: return details of place
@@ -125,7 +133,7 @@ class Craftsman extends Authenticatable implements JWTSubject
         $craftsman_details = DB::table('craftsmen')
             ->select('craftsman_id','first_name', 'last_name', 'email', 'gender',
                 'address', 'phone', 'status','craftsman_type_id',
-                'city_id', 'description','craftsman_img')
+                'city_id', 'description','craftsman_img','craftsman_slider')
             ->where('craftsman_id','=',$crafts_id)
             ->get();
         return $craftsman_details;
@@ -141,6 +149,7 @@ class Craftsman extends Authenticatable implements JWTSubject
             return 0;
         }
     }
+
 
     // TODO return Data OF USER
     public static function show_data_of_craftsman($craftsman_id)

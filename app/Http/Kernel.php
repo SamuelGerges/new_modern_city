@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'userToken' => \App\Http\Middleware\UserToken::class,
         'craftsmanToken' => \App\Http\Middleware\CraftsmanToken::class,
         'guard' => \App\Http\Middleware\CheckAuth::class,
+        'prevent_back_url' => \App\Http\Middleware\PreventBackUrl::class,
 
 
 

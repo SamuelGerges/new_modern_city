@@ -17,38 +17,39 @@ class Place extends Model
     protected $hidden = ['created_at','updated_at'];
 
 
+
     protected static function validation(){
 
         return[
-            'data.place_name'             => ['required', 'string', 'max:100'],
-            'data.phone'                  => ['required', 'numeric', 'min:11'],
-            'data.address'                => ['required', 'string', 'max:200'],
-            'data.geo_location_lat'       => ['string'],
-            'data.geo_location_long'      => ['string'],
-            'data.description'            => ['nullable', 'string'],
-            'data.show_in_ads'            => ['required', 'integer', 'between:0,1'],
-            'data.show_in_famous_places'  => ['required', 'integer', 'between:0,1'],
-            'data.open_time'              => ['date_format:H:i'],
-            'data.close_time'             => ['date_format:H:i'],
-            'data.big_img.url'            => ['image', 'mimes:jpg,jpeg,png'],
-            'data.big_img.title'          => ['nullable', 'string'],
-            'data.big_img.alt'            => ['nullable', 'string'],
-            'data.small_img.url'          => ['image', 'mimes:jpg,jpeg,png'],
-            'data.small_img.title'        => ['nullable', 'string'],
-            'data.small_img.alt'          => ['nullable', 'string'],
-            'data.slider_img.url.*'       => ['nullable'],
-            'data.slider_img.src.*'       => ['nullable'],
-            'data.slider_img.alt.*'       => ['nullable', 'string'],
-            'data.slider_img.title.*'     => ['nullable', 'string'],
-            'data.slider_img.deleted_urls.*'=> ['nullable', 'string'],
-            'data.city_id'                => ['required', 'exists:cities,city_id'],
-            'data.place_type_id'          => ['required', 'exists:places_types,place_type_id'],
+            'data.place_name'                 => ['required', 'string', 'max:100'],
+            'data.phone'                      => ['required', 'numeric', 'min:11'],
+            'data.address'                    => ['required', 'string', 'max:200'],
+            'data.geo_location_lat'           => ['string'],
+            'data.geo_location_long'          => ['string'],
+            'data.description'                => ['nullable', 'string'],
+            'data.show_in_ads'                => ['required', 'integer', 'between:0,1'],
+            'data.show_in_famous_places'      => ['required', 'integer', 'between:0,1'],
+            'data.open_time'                  => ['date_format:H:i'],
+            'data.close_time'                 => ['date_format:H:i'],
+            'data.big_img.url'                => ['image', 'mimes:jpg,jpeg,png'],
+            'data.big_img.title'              => ['nullable', 'string'],
+            'data.big_img.alt'                => ['nullable', 'string'],
+            'data.small_img.url'              => ['image', 'mimes:jpg,jpeg,png'],
+            'data.small_img.title'            => ['nullable', 'string'],
+            'data.small_img.alt'              => ['nullable', 'string'],
+            'data.slider_img.url.*'           => ['nullable'],
+            'data.slider_img.src.*'           => ['nullable'],
+            'data.slider_img.alt.*'           => ['nullable', 'string'],
+            'data.slider_img.title.*'         => ['nullable', 'string'],
+            'data.slider_img.deleted_urls.*'  => ['nullable', 'string'],
+            'data.city_id'                    => ['required', 'exists:cities,city_id'],
+            'data.place_type_id'              => ['required', 'exists:places_types,place_type_id'],
         ];
     }
 
+
     public function show_place_city($city_id)
     {
-
         $city = DB::table('cities')
             ->where('city_id', $city_id)
             ->value('city_name');
@@ -64,20 +65,31 @@ class Place extends Model
     }
 
 
-
     public static function show_places_by_type($place_type_id)
     {
-        // place_datails
-        // rate for place
         /*************** return all places by places_type_id ****************/
         $places = DB::table('places')
-            ->select('place_id', 'place_name','phone','geo_location_lat','geo_location_long','description' ,'big_img','places_types.place_type_name')
+            ->select('place_id', 'place_name','phone', 'description' ,'big_img', 'places_types.place_type_name')
             ->join('places_types', 'places.place_type_id', '=', 'places_types.place_type_id')
             ->where('places_types.place_type_id' , '=', $place_type_id)
             ->get();
-
         return $places;
     }
+
+    public static function show_place_state($place_id){
+
+
+        $state_query = DB::table('places')
+            ->where('place_id', '=', $place_id)
+            ->where('open_time', '<=', now())
+            ->where('close_time', '>=' , now())
+            ->value('place_id');
+        return !empty($state_query) ? 'open' : 'close';
+    }
+
+
+
+
     public static function show_datails_of_place($place_id)
     {
         // TODO: return details of place
@@ -99,16 +111,6 @@ class Place extends Model
             return 0;
         }
     }
-    public static function show_place_state($place_id){
-        $state_query = DB::table('places')
-            ->where('place_id', '=', $place_id)
-            ->where('open_time', '<=', now())
-            ->where('close_time', '>=', now())
-            ->value('place_id');
-        return !empty($state_query) ? 'open' : 'close';
-    }
-
-
     public static function show_famous_places()
     {
         $famous_places = DB::table('places')
@@ -117,7 +119,6 @@ class Place extends Model
         ->get();
         return $famous_places;
     }
-
     public static function show_advertisement()
     {
         $advertisement = DB::table('places')
@@ -126,9 +127,18 @@ class Place extends Model
             ->get();
         return $advertisement;
     }
+    public static function get_nearest_place($lat ,$long)
+    {
+        $nearest_place = DB::table("places")
+            ->select("place_id", "place_name",
+                DB::raw("6371 * acos(cos(radians(" . $lat . "))
+                * cos(radians(places.geo_location_lat))
+                * cos(radians(places.geo_location_long) - radians(" . $long . "))
+                + sin(radians(" .$lat. "))
+                * sin(radians(places.geo_location_lat))) AS distance"))
+            ->orderBy('distance', 'asc')
+            ->get();
+        return $nearest_place;
+    }
 
-//    public static function get_nearest_place()
-//    {
-//
-//    }
 }

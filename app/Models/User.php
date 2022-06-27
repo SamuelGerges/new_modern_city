@@ -29,7 +29,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     // TODO :: Boiar
-    public function show_user_city($city_id)
+    public static function show_user_city($city_id)
     {
 
         $city = DB::table('cities')
@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject
             ->value('city_name');
         return $city;
     }
+
 
     public function show_user_group($group_id)
     {
@@ -46,6 +47,8 @@ class User extends Authenticatable implements JWTSubject
             ->value('user_group_name');
         return $group;
     }
+
+
 
     public function show_user_type($email)
     {
@@ -96,7 +99,6 @@ class User extends Authenticatable implements JWTSubject
 
 
     }
-
     // TODO :: Boiar
 
 

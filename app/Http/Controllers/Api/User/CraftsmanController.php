@@ -89,27 +89,52 @@ class CraftsmanController extends Controller
                 return $this->returnValidationError($error, $validator);
             }
             $craftsman_data  = json_decode(Craftsman::show_datails_of_craftsman($craftsman_id),true)[0];
-
             if(!empty($craftsman_data)) {
-                    /**         Rate Craftsman        **/
-                    $craftsman_id = $craftsman_data['craftsman_id'];
-                    $craftsman_data['craftsman_rate']  = Craftsman::show_rate_craftsman($craftsman_id);
+                /**         Rate Craftsman        **/
+                $craftsman_id = $craftsman_data['craftsman_id'];
+                $craftsman_data['craftsman_rate']  = Craftsman::show_rate_craftsman($craftsman_id);
 
-                    /**         Image Craftsman       **/
-                    if (!is_null($craftsman_data['craftsman_img'])) {
-                        $craftsman_data['craftsman_img'] = json_decode($craftsman_data['craftsman_img'], true)['url'];
-                        if(Storage::disk('uploads')->exists('craftsmen/'.$craftsman_data['craftsman_img'])){
-                            $craftsman_data_url = asset('uploads/craftsmen/' . $craftsman_data['craftsman_img']);
-                            $craftsman_data['craftsman_img'] = $craftsman_data_url;
-                        }
-                        else{
-                            $craftsman_data_url = asset('admin/site_imgs/avatar_craftsman.png');
-                            $craftsman_data['craftsman_img'] = $craftsman_data_url;
-                        }
-                    } else {
+                /**       Fetched  Image Craftsman       **/
+                if (!is_null($craftsman_data['craftsman_img'])) {
+                    $craftsman_data['craftsman_img'] = json_decode($craftsman_data['craftsman_img'], true)['url'];
+                    if(Storage::disk('uploads')->exists('craftsmen/'.$craftsman_data['craftsman_img'])){
+                        $craftsman_data_url = asset('uploads/craftsmen/' . $craftsman_data['craftsman_img']);
+                        $craftsman_data['craftsman_img'] = $craftsman_data_url;
+                    }
+                    else{
                         $craftsman_data_url = asset('admin/site_imgs/avatar_craftsman.png');
                         $craftsman_data['craftsman_img'] = $craftsman_data_url;
                     }
+                } else {
+                    $craftsman_data_url = asset('admin/site_imgs/avatar_craftsman.png');
+                    $craftsman_data['craftsman_img'] = $craftsman_data_url;
+                }
+                /***  End Fetched Image Craftsman   **/
+
+                /************* Fetched slider imgs statments **************/
+                $slider = json_decode($craftsman_data['craftsman_slider'],true);
+
+
+                if (!is_null($slider)) {
+                    if (!isset($slider[0])) {
+                        $data[0] = $slider;
+                    } else {
+                        $data = $slider;
+                    }
+                    $slider_counter = count($data);
+                    for ($i = 0; $i < $slider_counter; $i++) {
+                        if (Storage::disk('uploads')->exists("craftsmen/sliders/" . $data[$i]['url'])) {
+                            $craftsman_data_urls[$i] = asset("uploads/craftsmen/sliders/" . $data[$i]['url']);
+                        } else {
+                            unset($data[$i]['url']);
+                        }
+                    }
+                    $craftsman_data['craftsman_slider'] = $craftsman_data_urls;
+                }
+                else {
+                    $craftsman_data_url = asset('admin/site_imgs/avatar_craftsman.png');
+                    $craftsman_data['craftsman_slider'] = $craftsman_data_url;
+                }
                 return $this->returnData('details_of_craftsman' ,$craftsman_data,'The Details of Craftsman');
             }
             else{
@@ -117,7 +142,7 @@ class CraftsmanController extends Controller
             }
         }
         else{
-            return $this->returnError('404','Please Insert Craftsman Id');
+            return $this->returnError('404','Please Check of Token is Authenticate');
         }
     }
 

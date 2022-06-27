@@ -10,7 +10,7 @@
                     <div class="col-sm-7">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('admin.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('admin.craft_type.index') }}">User Group / </a> {{  !isset($users_groups->user_group_id)  ? 'Add / ' : "Edit / ". $users_groups->user_group_name }}</li>
+                            <li class="breadcrumb-item active"><a href="{{route('admin.craft_type.index') }}">Craftsmen Types / </a> {{  !isset($craftsman_type->craftsman_type_id)  ? 'Add / ' : "Edit / ". $craftsman_type->craftsman_type_name}}</li>
                         </ol>
                     </div>
                 </div>

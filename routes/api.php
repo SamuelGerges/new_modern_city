@@ -25,6 +25,11 @@ Route::namespace('Api\User')->group(function(){
             Route::post('add_to_favorite','FavoriteController@AddToFavorite');
             Route::post('delete_from_favorite','FavoriteController@DeleteFromFavorite');
         });
+        Route::prefix('bus_routes/')->group(function (){
+            Route::post('get_bus_route_name','BusRouteController@GetBusRouteName');
+            Route::post('get_bus_route_station','BusRouteController@GetBusRouteStation');
+
+        });
 
         Route::prefix('places_types/')->group(function (){
             Route::post('show_all_places_types','PlaceTypeController@ShowAllPlacesTypes');
@@ -67,12 +72,17 @@ Route::namespace('Api\Craftsman')->group(function(){
 
 
 
-
     Route::middleware('craftsmanToken:api_crafts')->prefix('authenticate/')->group(function (){
         Route::post('edit_craftsman','CraftsmanController@EditCraftsman');
         Route::post('edit_craftsman_status','CraftsmanController@EditStatus');
 
         Route::post('upload_image','CraftsmanController@UploadImage');
+
+        Route::post('upload_single_image','CraftsmanController@UploadSingleImage');
+        Route::post('upload_multiple_image','CraftsmanController@UploadMultipleImage');
+        Route::post('show_details_of_craftsman','CraftsmanController@ShowDetailsOfCraftsman');
+        Route::post('show_works_of_craftsman','CraftsmanController@ShowWorksOFCraftsman');
+
 
 
         Route::prefix('places_types/')->group(function (){

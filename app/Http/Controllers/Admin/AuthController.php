@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\City;
 use App\Models\Craftsman;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -17,16 +19,22 @@ class AuthController extends Controller
 {
 
 
+    public function admin_profile(){
+
+    }
+
     public function login()
     {
 
-        return view('admin.auth.login');
+        if(Session::has('user_data')){
+            return redirect(route('admin.home'));
+        }
+        return view('admin.auth.login2');
+
     }
 
     public function do_login(Request $request)
     {
-
-
 
         $data = $request->validate([
             'email' => 'required | email | max:191',
@@ -59,12 +67,10 @@ class AuthController extends Controller
 
     public function logout()
     {
-
         auth()->guard('admin')->logout();
-
-        // check if admin  are logged in or not
+        Session::forget('user_data');
+        Session::save();
         return redirect(route('admin.login'));
-
     }
 
 
@@ -73,8 +79,9 @@ class AuthController extends Controller
 
     private function _admins()
     {
-        $user_data = json_decode(json_encode(DB::table('users')->first('first_name')), true);
+        $user_data = json_decode(json_encode(DB::table('users')->first()), true);
         $user_data['group'] = "Admin";
+        $user_data['city_name'] = User::show_user_city($user_data['city_id']);
         Session::put('user_data', $user_data);
         return redirect(route('admin.home'));
     }
@@ -82,11 +89,6 @@ class AuthController extends Controller
     private function _user()
     {
         return redirect(route('front.homepage'));
-    }
-
-    private function _data_entry()
-    {
-        echo 'data_entry';
     }
 
 

@@ -18,6 +18,8 @@ class PlaceType extends Model
 
 
 
+
+
     protected static function validation($place_id = null){
 
 
@@ -48,6 +50,10 @@ class PlaceType extends Model
 
         return $places;
     }
+
+
+
+
 
 
     public static function show_all_places_types()

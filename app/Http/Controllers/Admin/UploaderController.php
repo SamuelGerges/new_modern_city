@@ -94,6 +94,7 @@ trait UploaderController
         return $data;
     }
 }
+
 function single_img_upload_api($data, $img_index_name, $upload_dir_name, $old_img_name =null, $alt = null)
 {
     // $upload_dir_name ==> ex => users || places

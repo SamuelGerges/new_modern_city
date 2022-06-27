@@ -19,7 +19,7 @@ class CraftsmanController extends Controller
     public function index()
     {
 
-        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'status', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
+        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'work_state', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
 
         return view('admin/craftsmen/index')->with($data);
     }
@@ -27,6 +27,7 @@ class CraftsmanController extends Controller
 
     public function create_or_edit($id = null, Request $request)
     {
+
         if($id != NULL){
             /************** Edit Craftsman info ***************/
             if($request['data'] !== null){
@@ -39,6 +40,8 @@ class CraftsmanController extends Controller
                     $data = $request->validate(Craftsman::validation($id));
                     unset($data['data']['password']);
                 }
+
+
                 if(isset($request['data']['craftsman_img'])){
                     if(empty(Craftsman::findOrFail($id)->craftsman_img)){
                         $old_img_name = null;

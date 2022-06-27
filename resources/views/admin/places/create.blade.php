@@ -1,6 +1,15 @@
 @extends('admin/layout')
 @section('content')
 
+
+
+
+
+
+
+
+
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -11,7 +20,7 @@
                     <div class="col-sm-7">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('admin.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('admin.place.index') }}">Place Info / </a> {{  !isset($places->place_id)  ? 'Add / ' : "Edit / ". $places->place_name }}</li>
+                            <li class="breadcrumb-item active"><a href="{{route('admin.place.index') }}">Place Info / </a> {{  !isset($place->place_id)  ? 'Add / ' : "Edit / ". $place->place_name }}</li>
                         </ol>
                     </div>
                 </div>
@@ -74,22 +83,13 @@
                                     <div class="col-md-12 pr-md-1" id="google_map">
                                     </div>
                                 </div>
-
-
-
-                                <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWqX-NuL2nbJcKobC-FUKfTfDGBVpL-e4&libraries=places&sensor=false">
-
-                                </script>
-
-
-
-
+                                <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAWqX-NuL2nbJcKobC-FUKfTfDGBVpL-e4&libraries=places&sensor=false"></script>
                                 <script type="text/javascript" src="{{asset('admin/my_files/maps.js')}}"></script>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6 pr-md-1">
                                         <label>Description</label>
-                                        <textarea name="data[description]" class="form-control"  rows="3">{{ !isset($place->description) ? '' : $place->description }}</textarea>
+                                        <textarea name="data[description]" class="form-control"  rows="3" >{{ !isset($place->description) ? '' : $place->description }}</textarea>
                                     </div>
                                     <div class="col-md-6 pr-md-1">
                                         <label>City</label>

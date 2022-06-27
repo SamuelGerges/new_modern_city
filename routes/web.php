@@ -2,25 +2,37 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('/welcome');
+});
 
 
-
-Route::get('/','HomeController@index');
+/**********************************  Admin Routes ***************************************/
 
 
 Route::namespace('Admin')->prefix('dashboard')->group(function (){
 
 
-    Route::get('/login', 'AuthController@login')->name('admin.login');
-
+    Route::get('/login', 'AuthController@login')->name('admin.login')->middleware('prevent_back_url');
     Route::post('/do_login', 'AuthController@do_login')->name('admin.do_login');
 
     /********************************** Middleware For Admins   ***************************************/
-    Route::middleware('admin_auth:admin')->group(function (){
+    Route::middleware(['admin_auth:admin', 'prevent_back_url'])->group(function (){
 
-        Route::get('/logout', 'AuthController@logout')->name('admin.logout');
         Route::get('/', 'DashboardController@index')->name('admin.home');
-
+        Route::get('/profile', 'AuthController@admin_profile')->name('admin.profile');
+        Route::get('/logout', 'AuthController@logout')->name('admin.logout');
 
 
         Route::prefix('users_groups')->group(function (){
@@ -42,6 +54,18 @@ Route::namespace('Admin')->prefix('dashboard')->group(function (){
             Route::post('/edit/{id?}', array( 'uses' => 'UserController@create_or_edit', function($id = null){}))->name('admin.user.edit');
 
             Route::get('/delete/{id?}', array( 'uses' => 'UserController@delete', function($id = null){}))->name('admin.user.delete');
+
+        });
+
+
+        Route::prefix('profile')->group(function (){
+
+            Route::get('/', 'UserProfileController@index')->name('admin.user_profile.index');
+
+           /* Route::get('/edit/{id?}', array( 'uses' => 'UserController@create_or_edit', function($id = null){}))->name('admin.user.edit');
+            Route::post('/edit/{id?}', array( 'uses' => 'UserController@create_or_edit', function($id = null){}))->name('admin.user.edit');
+
+            Route::get('/delete/{id?}', array( 'uses' => 'UserController@delete', function($id = null){}))->name('admin.user.delete');*/
 
         });
 
@@ -93,7 +117,7 @@ Route::namespace('Admin')->prefix('dashboard')->group(function (){
 
         });
 
-
+        
         Route::prefix('cities')->group(function (){
 
             Route::get('/', 'CityController@index')->name('admin.city.index');
@@ -105,18 +129,20 @@ Route::namespace('Admin')->prefix('dashboard')->group(function (){
 
         });
 
+        Route::prefix('bus_routes')->group(function (){
+
+            Route::get('', 'BusRouteController@index')->name('admin.bus_route.index');
+
+            Route::get('/edit/{id?}', array( 'uses' => 'BusRouteController@create_or_edit', function($id = null){}))->name('admin.bus_route.edit');
+
+            Route::post('/edit/{id?}', array( 'uses' => 'BusRouteController@create_or_edit', function($id = null){}))->name('admin.bus_route.edit');
+
+            Route::get('/delete/{id?}', array( 'uses' => 'BusRouteController@delete', function($id = null){}))->name('admin.bus_route.delete');
+        });
 
 
-        Route::get('/cats', 'CatController@index')->name('admin.cat.index');
 
-        Route::get('/cats/edit/{id?}', array( 'uses' => 'CatController@create_or_edit', function($id = null){}))->name('admin.cat.edit');
-
-        Route::post('/cats/edit/{id?}', array( 'uses' => 'CatController@create_or_edit', function($id = null){}))->name('admin.cat.edit');
-
-        Route::get('/cats/delete/{id?}', array( 'uses' => 'CatController@delete', function($id = null){}))->name('admin.cat.delete');
 
     });
 
 });
-
-

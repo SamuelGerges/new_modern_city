@@ -102,48 +102,10 @@ class UserController extends Controller
 
     public function delete($id)
     {
+
         User::findOrFail($id)->delete();
         return back();
     }
-
-
-        // check if token for user ()
-        // true => user_info
-        // false ==> error ()
-
-
-    function show_fav_list(Request $request){
-
-        // req => (token)
-        // func(token) => info_of_user => user_id
-
-
-        // query_func(user_id) -- group_by => place_id's
-        // func (place_id's) ==> info of places
-        // response ==> data
-    }
-
-    function create_fav(Request $request){
-
-        // req =>(token & place_id)
-        // func(token) => user_id
-        // query (place_id & user_id)
-    }
-
-
-    function delete_fav(Request $request){
-
-        // req =>(token & place_id)
-        // func(token) => user_id
-
-        // query (place_id & user_id)
-        // delete(fav_list_item_id)
-    }
-
-
-
-
-
 
 
 }

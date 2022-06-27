@@ -39,7 +39,6 @@ class CraftsmanType extends Model
         ];
     }
 
-
     public static function show_all_crafts_type()
     {
         $crafts_type = DB::table('craftsmen_types')->get();

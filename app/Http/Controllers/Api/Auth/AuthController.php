@@ -21,22 +21,19 @@ class AuthController extends Controller
     // TODO :: Function Login
     public function Login(Request $request)
     {
-        // Validation
-        $validator = Validator::make($request->all(), [
-            "email" => "required",
-            "password" => "required"
-        ]);
-        if ($validator->fails()){
-            $code = $this->returnCodeAccordingToInput($validator);
-            return $this->returnValidationError($code, $validator);
-        }
-        $credentials = $request->only(['email', 'password']);
 
         $login_type = $request->login_type;
 
-
-
         if($login_type == 'user'){
+            $validator = Validator::make($request->all(), [
+                "email" => "required|exists:users,email",
+                "password" => "required"
+            ]);
+            if ($validator->fails()){
+                $code = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($code, $validator);
+            }
+            $credentials = $request->only(['email', 'password']);
             //            login
             User::where('email',$request->email)->update(['token' => Str::random(20).now().Str::random(21)]);
             $user_token = auth()->guard('api_user')->attempt($credentials);
@@ -49,6 +46,15 @@ class AuthController extends Controller
             return $this->returnData('User', $user,'This Data is selected');
         }
         elseif ($login_type == 'crafts'){
+            $validator = Validator::make($request->all(), [
+                "email" => "required|exists:craftsmen,email",
+                "password" => "required"
+            ]);
+            if ($validator->fails()){
+                $code = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($code, $validator);
+            }
+            $credentials = $request->only(['email', 'password']);
             //            login
             Craftsman::where('email', $request->email)->update(['token' => Str::random(20) . now() . Str::random(21)]);
             $crafts_token = auth()->guard('api_crafts')->attempt($credentials);

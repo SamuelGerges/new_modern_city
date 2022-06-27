@@ -1,8 +1,8 @@
     <footer class="main-footer">
-        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+        <strong>Copyright &copy; 2021-2022 <a href="{{ route('admin.home') }}">Error 404 Team</a>.</strong>
         All rights reserved.
         <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 3.2.0
+            <b>Version</b> 1.0
         </div>
     </footer>
 
@@ -23,8 +23,7 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>
-<!-- Bootstrap 4 -->
-<script src="{{asset('admin/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
 
 <!-- daterangepicker -->
 <script src="{{asset('admin/plugins/moment/moment.min.js')}}"></script>

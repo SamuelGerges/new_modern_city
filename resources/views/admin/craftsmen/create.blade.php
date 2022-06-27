@@ -12,7 +12,7 @@
                     <div class="col-sm-7">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{route('admin.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('admin.craft.index') }}">User Info / </a> {{  !isset($craftsman->craftsman_id)  ? 'Add / ' : "Edit / ". $craftsman->first_name }}</li>
+                            <li class="breadcrumb-item active"><a href="{{route('admin.craft.index') }}">Craftsman Info / </a> {{  !isset($craftsman->craftsman_id)  ? 'Add / ' : "Edit / ". $craftsman->first_name }}</li>
                         </ol>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
                                 <div class="row mb-3">
                                     <div class="col-md-6 pr-md-1">
                                         <label>Description</label>
-                                        <textarea name="data[description]" class="form-control"  rows="3">{{ !isset($craftsman->description) ? '' : $craftsman->description }}</textarea>
+                                        <textarea name="data[description]" class="form-control"  rows="3" >{{ !isset($craftsman->description) ? '' : $craftsman->description }}</textarea>
                                     </div>
 
 
