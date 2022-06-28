@@ -69,7 +69,7 @@ class Place extends Model
     {
         /*************** return all places by places_type_id ****************/
         $places = DB::table('places')
-            ->select('place_id', 'place_name','phone', 'description' ,'big_img', 'places_types.place_type_name')
+            ->select('place_id', 'place_name','phone', 'geo_location_lat', 'geo_location_long','description' ,'big_img', 'places_types.place_type_name')
             ->join('places_types', 'places.place_type_id', '=', 'places_types.place_type_id')
             ->where('places_types.place_type_id' , '=', $place_type_id)
             ->get();

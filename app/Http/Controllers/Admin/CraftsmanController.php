@@ -19,7 +19,7 @@ class CraftsmanController extends Controller
     public function index()
     {
 
-        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'work_state', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
+        $data['craftsmen'] = Craftsman::select('craftsman_id', 'first_name', 'last_name', 'status', 'craftsman_type_id', 'city_id')->orderBy('craftsman_id', 'asc')->get();
 
         return view('admin/craftsmen/index')->with($data);
     }
