@@ -127,7 +127,7 @@ class Place extends Model
             ->get();
         return $advertisement;
     }
-    public static function get_nearest_place($lat ,$long)
+    public static function get_nearest_place($lat , $long, $place_type_id)
     {
         $nearest_place = DB::table("places")
             ->select("place_id", "place_name",
@@ -136,6 +136,7 @@ class Place extends Model
                 * cos(radians(places.geo_location_long) - radians(" . $long . "))
                 + sin(radians(" .$lat. "))
                 * sin(radians(places.geo_location_lat))) AS distance"))
+            ->where('place_type_id', '=', $place_type_id)
             ->orderBy('distance', 'asc')
             ->get();
         return $nearest_place;

@@ -296,26 +296,23 @@ class PlaceController extends Controller
     public function GetNearestPlace(Request $request)
     {
         $token = $request->token;
-        if (isset($request->geo_location_lat,$request->geo_location_long)){
-            $latitude =  (double)$request->geo_location_lat;
-            $longtitude = (double)$request->geo_location_long;
-
-            $validator = Validator::make($request->all(),[
-                'geo_location_lat' =>'required|numeric',
-                'geo_location_long' =>'required|numeric',
-            ]);
-            if($validator->fails()){
-                $error = $this->returnCodeAccordingToInput($validator);
-                return $this->returnValidationError($error, $validator);
-            }
-
-            $data = Place::get_nearest_place($latitude,$longtitude);
-
-            return $this->returnData('nearest_place',$data);
+        $place_type_id = $request->place_type_id;
+        $validator = Validator::make($request->all(),[
+            'place_type_id' => 'required|numeric|exists:places_types,place_type_id',
+            'geo_location_lat' =>'required|numeric',
+            'geo_location_long' =>'required|numeric',
+        ]);
+        if($validator->fails()){
+            $error = $this->returnCodeAccordingToInput($validator);
+            return $this->returnValidationError($error, $validator);
         }
-        else{
-            return $this->returnError('404','Please Insert Latitude and Longtitude');
-        }
+
+        $latitude =  (double)$request->geo_location_lat;
+        $longtitude = (double)$request->geo_location_long;
+        $data = Place::get_nearest_place($latitude,$longtitude,$place_type_id);
+        return $this->returnData('nearest_place', $data);
+
+
 
     }
 
